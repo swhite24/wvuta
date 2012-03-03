@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+	<array name="reportType">
+		<item>@string/downLabel</item>
+		<item>@string/runningLabel</item>
+	</array>
+	<array name="reportLocation">
+		<item>@string/beechurstLabel</item>
+		<item>@string/walnutLabel</item>
+		<item>@string/engineeringLabel</item>
+		<item>@string/towersLabel</item>
+		<item>@string/medicalLabel</item>
+	</array>
+	<string-array name="notifcationOptions">
+	    <item>Text</item>
+	    <item>Email</item>
+	</string-array>
+	<string-array name="update_freq_titles">
+	    <item>15 minutes</item>
+	    <item>30 minutes</item>
+	    <item>1 hour</item>
+	    <item>4 hours</item>
+	</string-array>
+	<string-array name="update_freq_vals">
+	    <item>900</item>
+	    <item>1800</item>
+	    <item>3600</item>
+	    <item>14400</item>
+	</string-array>
+</resources>

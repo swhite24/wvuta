@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android">
+  	<CheckBoxPreference
+  	    android:key="UPDATE_PREF"
+  	    android:title="Automatic Updates"
+  	    android:summary="Automatically update status of PRT"
+  	    android:defaultValue="true"/>
+  	<CheckBoxPreference 
+  	    android:key="LOGIN_PREF"
+  	    android:title="Automatic Login"
+  	    android:summary="Automatically login to system"
+  	    android:defaultValue="true"/>
+  	<PreferenceCategory
+  	    android:title="Notifications">
+	    <CheckBoxPreference 
+	    	android:key="NOTIFICATION_PREF"
+	    	android:title="@string/notificationTitle"
+	    	android:summary="@string/notificationSummary"
+	    	android:defaultValue="false"/>
+	    <ListPreference
+	        android:key="NOTIFICATION_FREQ"
+	        android:title="Notification Frequency"
+	        android:summary="Choose how often to check for notifications"
+	        android:entries="@array/update_freq_titles"
+	        android:entryValues="@array/update_freq_vals"
+	        android:dialogTitle="Notification Frequency"
+	        android:defaultValue="3600"
+	        android:dependency="NOTIFICATION_PREF"
+	        />
+  	</PreferenceCategory>
+</PreferenceScreen>

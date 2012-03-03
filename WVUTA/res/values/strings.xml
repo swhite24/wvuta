@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="appWelcome">Welcome to the WVU Transportation App!</string>
+    <string name="app_name">WVU Transportation App</string>
+    <string name="prtStart">PRT</string>
+    <string name="busStart">View Bus Status</string>
+    <string name="aboutLabel">About</string>
+    <string name="aboutTitle">About WVU Transportation App</string>
+    <string name="aboutText">\
+About WVU Transportation App.  About WVU Transportation App.  
+About WVU Transportation App.  About WVU Transportation App.  
+About WVU Transportation App.  About WVU Transportation App.  
+About WVU Transportation App.  About WVU Transportation App.  
+About WVU Transportation App.  About WVU Transportation App.  
+About WVU Transportation App.  About WVU Transportation App.  
+About WVU Transportation App.  About WVU Transportation App.  
+About WVU Transportation App.  About WVU Transportation App.  
+About WVU Transportation App.  About WVU Transportation App.</string>
+	<string name="prtMainTitle">PRT Section</string>
+	<string name="prtLabel">PRT</string>
+	<string name="prtViewStatusButton">View Status</string>
+	<string name="prtReportStatusButton">Report Status</string>
+	<string name="prtStatus">Current PRT Status</string>
+	<string name="prtReportStatus">Report PRT Status</string>
+	<string name="busMainTitle">Bus Section</string>
+	<string name="busLabel">Bus</string>
+	<string name="busViewStatusButton">View Status</string>
+	<string name="backButton">Back</string>
+	<string name="submitButton">Submit</string>
+	<string name="busWebTitle">Bus Status</string>
+	<string name="downLabel">Down</string>
+	<string name="runningLabel">Running</string>
+	<string name="beechurstLabel">Beechurst</string>
+	<string name="walnutLabel">Walnut</string>
+	<string name="engineeringLabel">Engineering</string>
+	<string name="towersLabel">Towers</string>
+	<string name="medicalLabel">Medical</string>
+	<string name="submissionLabel">Submission</string>
+	<string name="acceptedSubmissionText">Submission accepted</string>
+	<string name="denySubmissionText">Submission not accepted.  Choose a status and location.</string>
+	<string name="submissionLimitExceededText">Submission not accepted.  Please wait to report again.</string>
+	<string name="exitLabel">Exit</string>
+	<string name="helpLabel">Help</string>
+	<string name="currentStatusDefault">Retrieving Data From Server&#8230;</string>
+	<string name="prtReportHistory">View Report History</string>
+	<string name="prtHistory">Reporting History</string>
+	<string name="prtViewStatus">View PRT Status</string>
+	<string name="prtHistoryDefaultText">Nothing to display.</string>
+	<string name="menuSettingsLabel">Settings</string>
+	<string name="menuSettingsShortcut">S</string>
+	<string name="notificationTitle">Receive Notifications</string>
+	<string name="notificationSummary">Receive notification of PRT status change</string>
+	<string name="busTableButtonText">Chart</string>
+	<string name="busMapButtonText">Map</string>
+	<string name="currentStatusMenuFBS">Filter Status</string>
+	<string name="currentStatusMenuFBL">Filter Location</string>
+	<string name="currentStatusMenuDefault">Default</string>
+</resources>

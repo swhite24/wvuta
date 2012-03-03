@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/currentStatusMenuRefresh"
+        android:title="Refresh" />
+    
+    <item
+        android:id="@+id/currentStatusMenuFBL"
+        android:title="@string/currentStatusMenuFBL">
+		<menu >
+
+            <item
+                android:id="@+id/currentStatusMenuBeechurst"
+                android:title="Beechurst"></item>
+
+            <item
+                android:id="@+id/currentStatusMenuEngineering"
+                android:title="Engineering"></item>
+
+            <item
+                android:id="@+id/currentStatusMenuMedical"
+                android:title="Medical"></item>
+
+            <item
+                android:id="@+id/currentStatusMenuTowers"
+                android:title="Towers"></item>
+
+            <item
+                android:id="@+id/currentStatusMenuWalnut"
+                android:title="Walnut"></item>
+        </menu>
+        
+    </item>
+
+    <item
+        android:id="@+id/currentStatusMenuFBS"
+        android:alphabeticShortcut="l"
+        android:title="@string/currentStatusMenuFBS">
+		<menu >
+
+            <item
+                android:id="@+id/currentStatusMenuUp"
+                android:title="Running"></item>
+
+            <item
+                android:id="@+id/currentStatusMenuDown"
+                android:title="Not Running"></item>
+        </menu>
+        
+    </item>
+
+    <item
+        android:id="@+id/currentStatusMenuDefault"
+        android:alphabeticShortcut="d"
+        android:title="@string/currentStatusMenuDefault">
+        
+    </item>
+
+</menu>

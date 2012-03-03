@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="org.mockup.wvuta"
+      android:versionCode="1"
+      android:versionName="1.25">
+    <uses-sdk android:minSdkVersion="8" />
+	<uses-permission 
+		android:name="android.permission.INTERNET"/>
+	<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <application 
+    	android:icon="@drawable/ya" 
+    	android:label="@string/app_name"
+    	android:debuggable="true">
+    	<uses-library android:name="com.google.android.maps" />
+        <activity 
+        	android:name=".WVUTransportationAppActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity 
+        	android:name=".About"
+        	android:label="@string/aboutTitle"
+        	android:theme="@android:style/Theme.Dialog">
+        </activity>
+        <activity
+        	android:name=".PRTMain"
+        	android:label="@string/prtMainTitle">
+        </activity>
+		<activity 
+			android:name=".BusMain"
+			android:label="@string/busMainTitle">
+		</activity>
+		<activity 
+			android:name=".BusWebStatus"
+			android:label="@string/busWebTitle">
+		</activity>
+		<activity
+			android:name=".PRTReportStatus"
+			android:label="@string/prtReportStatus">
+		</activity>
+		<activity
+			android:name=".PRTCurrentStatus"
+			android:label="@string/prtStatus">
+		</activity>
+		<activity
+			android:name=".AcceptSubmission"
+			android:label="@string/submissionLabel"
+			android:theme="@android:style/Theme.Dialog">
+		</activity>
+		<activity
+			android:name=".DenySubmission"
+			android:label="@string/submissionLabel"
+			android:theme="@android:style/Theme.Dialog">
+		</activity>
+		<activity
+			android:name=".PRTViewHistory"
+			android:label="@string/prtHistory">
+		</activity>
+		<activity
+			android:name=".Prefs"
+			android:label="@string/menuSettingsLabel">
+		</activity>
+		<service 
+		    android:enabled="true"
+		    android:name=".RetrievingService">
+		</service>
+		<service
+		    android:enabled="true"
+		    android:name=".ReportingService">
+		</service>	    
+    </application>
+</manifest>

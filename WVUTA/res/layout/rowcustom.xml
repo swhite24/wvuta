@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" 
+    android:background="@color/Background">
+    <TextView 
+	    android:id="@+id/dateCol"
+	    android:textColor="@color/blueText"
+	    android:layout_width="wrap_content"
+	    android:layout_height="fill_parent"
+	    android:scrollbars="vertical"
+	    android:fadingEdge="vertical"
+	    android:padding="10dp"
+	    android:layout_alignParentLeft="true"/>
+	<TextView 
+	    android:id="@+id/locCol"
+	    android:textColor="@color/blueText"
+	    android:gravity="center_horizontal"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:scrollbars="vertical"
+	    android:fadingEdge="vertical"
+	    android:padding="10dp"/>
+	<TextView 
+	    android:id="@+id/statCol"
+	    android:textColor="@color/blueText"
+	    android:layout_width="wrap_content"
+	    android:layout_height="fill_parent"
+	    android:scrollbars="vertical"
+	    android:fadingEdge="vertical"
+	    android:padding="10dp"
+	    android:layout_alignParentRight="true"/>
+
+</RelativeLayout>
