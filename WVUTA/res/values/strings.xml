@@ -25,7 +25,6 @@ About WVU Transportation App.  About WVU Transportation App.</string>
 	<string name="busMainTitle">Bus Section</string>
 	<string name="busLabel">Bus</string>
 	<string name="busViewStatusButton">View Status</string>
-	<string name="backButton">Back</string>
 	<string name="submitButton">Submit</string>
 	<string name="busWebTitle">Bus Status</string>
 	<string name="downLabel">Down</string>
@@ -55,4 +54,14 @@ About WVU Transportation App.  About WVU Transportation App.</string>
 	<string name="currentStatusMenuFBS">Filter Status</string>
 	<string name="currentStatusMenuFBL">Filter Location</string>
 	<string name="currentStatusMenuDefault">Default</string>
+	<string name="location_spinner_prompt">Select Location</string>
+	<string-array 
+	    name="location_spinner_options">
+	    <item>Select Location</item>
+	    <item>Beechurst</item>
+	    <item>Engineering</item>
+	    <item>Towers</item>
+	    <item>Medical</item>
+	    <item>Walnut</item>
+	</string-array>
 </resources>

@@ -1,17 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-	<array name="reportType">
-		<item>@string/downLabel</item>
-		<item>@string/runningLabel</item>
-	</array>
-	<array name="reportLocation">
-		<item>@string/beechurstLabel</item>
-		<item>@string/walnutLabel</item>
-		<item>@string/engineeringLabel</item>
-		<item>@string/towersLabel</item>
-		<item>@string/medicalLabel</item>
-	</array>
 	<string-array name="notifcationOptions">
 	    <item>Text</item>
 	    <item>Email</item>

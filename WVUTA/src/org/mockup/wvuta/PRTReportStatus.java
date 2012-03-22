@@ -12,6 +12,10 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,19 +47,15 @@ public class PRTReportStatus extends Activity implements OnClickListener {
 
 		View downButton = findViewById(R.id.downRB);
 		View runningButton = findViewById(R.id.runningRB);
-		View beechurstButton = findViewById(R.id.beechurstRB);
-		View walnutButton = findViewById(R.id.walnutRB);
-		View engineeringButton = findViewById(R.id.engineeringRB);
-		View towersButton = findViewById(R.id.towersRB);
-		View medicalButton = findViewById(R.id.medicalRB);
 
 		downButton.setOnClickListener(this);
 		runningButton.setOnClickListener(this);
-		beechurstButton.setOnClickListener(this);
-		walnutButton.setOnClickListener(this);
-		engineeringButton.setOnClickListener(this);
-		towersButton.setOnClickListener(this);
-		medicalButton.setOnClickListener(this);
+		Spinner locations = (Spinner) findViewById(R.id.location_spinner);
+		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+				this, R.array.location_spinner_options,
+				android.R.layout.simple_spinner_item);
+		locations.setAdapter(adapter);
+		locations.setOnItemSelectedListener(new SpinnerSelectedListener());
 
 		// set initial text display
 		setNewReportText();
@@ -105,26 +105,6 @@ public class PRTReportStatus extends Activity implements OnClickListener {
 		case R.id.runningRB:
 			upDown = true;
 			statusString = "up";
-			break;
-		case R.id.beechurstRB:
-			location = true;
-			locString = "beechurst";
-			break;
-		case R.id.walnutRB:
-			location = true;
-			locString = "walnut";
-			break;
-		case R.id.engineeringRB:
-			location = true;
-			locString = "engineering";
-			break;
-		case R.id.towersRB:
-			location = true;
-			locString = "towers";
-			break;
-		case R.id.medicalRB:
-			location = true;
-			locString = "medical";
 			break;
 		case R.id.prtSubmitButton:
 			// status & location selected = accept
@@ -177,7 +157,25 @@ public class PRTReportStatus extends Activity implements OnClickListener {
 		}
 	}
 
-	public class ReportingReceiver extends BroadcastReceiver {
+	private class SpinnerSelectedListener implements OnItemSelectedListener {
+
+		public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
+				long arg3) {
+			if (arg2 == 0) {
+				locString = null;
+				location = false;
+			} else {
+				locString = arg0.getItemAtPosition(arg2).toString();
+				location = true;
+			}
+		}
+
+		public void onNothingSelected(AdapterView<?> arg0) {
+		}
+
+	}
+
+	private class ReportingReceiver extends BroadcastReceiver {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
