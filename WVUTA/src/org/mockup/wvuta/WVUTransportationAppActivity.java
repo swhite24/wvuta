@@ -61,7 +61,7 @@ public class WVUTransportationAppActivity extends Activity implements OnClickLis
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.mainPRTViewStatusButton:
-			Intent i = new Intent(this, PRTCurrentStatus.class);
+			Intent i = new Intent(this, PRTTab.class);
 			startActivity(i);
 			break;
 		case R.id.mainPRTReportButton:

@@ -29,6 +29,21 @@
         	android:name=".PRTMain"
         	android:label="@string/prtMainTitle">
         </activity>
+        <activity 
+            android:name=".PRTTab"
+            android:label="PRT"
+            android:theme="@android:style/Theme.NoTitleBar">            
+        </activity>
+        <activity
+            android:name=".PRTSummary"
+            android:label="PRT" />
+        <activity
+            android:name=".PRTReports"
+            android:label="PRT" />
+        <activity
+            android:name=".PRTMap"
+            android:label="PRT" />
+        
 		<activity 
 			android:name=".BusMain"
 			android:label="@string/busMainTitle">
