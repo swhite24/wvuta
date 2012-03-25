@@ -16,7 +16,7 @@ public class LatestReportDBAdapter {
 	private static final String KEY_STATUS = "status";
 	
 	private static final String DATABASE_CREATE = "create table " +
-			DATABASE_TABLE + " (" + KEY_LOCATION + " text primary key, " +
+			DATABASE_TABLE + " (" + KEY_LOCATION + " text not null, " +
 			KEY_TIME + " date not null, " + KEY_STATUS + " text not null);";
 	
 	private SQLiteDatabase db;

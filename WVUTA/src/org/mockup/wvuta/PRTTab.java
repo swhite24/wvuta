@@ -23,7 +23,7 @@ public class PRTTab extends TabActivity {
 		tab_host.addTab(spec);
 
 		intent = new Intent().setClass(this, PRTReports.class);
-		spec = tab_host.newTabSpec("Details").setIndicator("Details", null)
+		spec = tab_host.newTabSpec("Reports").setIndicator("Reports", null)
 				.setContent(intent);
 		tab_host.addTab(spec);
 

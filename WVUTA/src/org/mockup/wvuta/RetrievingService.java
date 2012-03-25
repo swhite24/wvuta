@@ -132,7 +132,7 @@ public class RetrievingService extends Service {
 
 					SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
 					Date date = df.parse(time);
-					date.setHours(date.getHours()+2);
+					date.setHours(date.getHours()+3);
 					String newTime = DateFormat.getTimeInstance(
 							DateFormat.SHORT).format(date);
 

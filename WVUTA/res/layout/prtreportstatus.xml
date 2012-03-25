@@ -7,15 +7,6 @@
     android:orientation="vertical"
     android:padding="15dip" >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|top"
-        android:layout_marginBottom="20dip"
-        android:text="@string/prtReportStatus"
-        android:textColor="@color/blueText"
-        android:textSize="25dip" />
-
     <Spinner
         android:id="@+id/location_spinner"
         android:layout_width="fill_parent"
@@ -56,6 +47,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:layout_gravity="bottom"
         android:text="No reports yet"
         android:textColor="@color/blueText" >
     </TextView>
