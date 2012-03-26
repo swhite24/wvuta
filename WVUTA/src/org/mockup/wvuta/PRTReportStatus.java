@@ -27,6 +27,7 @@ public class PRTReportStatus extends Activity implements OnClickListener {
 
 	private String statusString = null;
 	private String locString = null;
+	private static final String TAG = "WVUTA::PRTREPORTSTATUS";
 
 	private TextView reportText;
 	private ReportingReceiver receiver;
@@ -36,6 +37,8 @@ public class PRTReportStatus extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.prtreportstatus);
 
+		Log.d(TAG, "PRTReportStatus onCreate");
+		
 		// initialize preferences
 		reportTracker = getSharedPreferences(Constants.TABLENAME,
 				Context.MODE_PRIVATE);
@@ -64,6 +67,7 @@ public class PRTReportStatus extends Activity implements OnClickListener {
 	@Override
 	public void onResume() {
 		super.onResume();
+		Log.d(TAG, "PRTReportStatus onResume");
 		// Setup receiver to know when ReportingService completes task
 		IntentFilter filter = new IntentFilter(ReportingService.REPORTING);
 		receiver = new ReportingReceiver();
@@ -73,6 +77,7 @@ public class PRTReportStatus extends Activity implements OnClickListener {
 	@Override
 	public void onPause() {
 		super.onPause();
+		Log.d(TAG, "PRTReportStatus onPause");
 		// unregister receiver when activity in background
 		unregisterReceiver(receiver);
 	}
@@ -120,7 +125,7 @@ public class PRTReportStatus extends Activity implements OnClickListener {
 					toast.setGravity(Gravity.CENTER, 0, 0);
 					toast.show();
 				} else {
-					Log.d("submitting", "in here");
+					Log.d(TAG, "Submitting report");
 					editor.putLong(Constants.TIME, System.currentTimeMillis());
 					editor.putString(Constants.STATUS, statusString);
 					editor.putString(Constants.LOCATION, locString);
@@ -179,6 +184,7 @@ public class PRTReportStatus extends Activity implements OnClickListener {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			Log.d(TAG, "Received broadcast");
 			// update text
 			setNewReportText();
 

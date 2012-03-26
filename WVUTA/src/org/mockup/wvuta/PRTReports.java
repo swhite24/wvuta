@@ -28,7 +28,7 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class PRTReports extends Activity {
-
+	private static final String TAG = "WVUTA::PRTREPORTS";
 	private ListView reports_lv;
 	private final ArrayList<Report> reportArray = new ArrayList<Report>();
 	private RowAdapter rowAdapter = null;
@@ -108,6 +108,7 @@ public class PRTReports extends Activity {
 	private Intent serviceIntent;
 
 	private void getDBInfo() {
+		Log.d(TAG, "Retrieving latest reports");
 		defaultText();
 		serviceIntent = new Intent(this, RetrievingService.class);
 		startService(serviceIntent);
@@ -124,7 +125,7 @@ public class PRTReports extends Activity {
 		updateInfo();
 	}
 
-	public void updateInfo() {
+	private void updateInfo() {
 		// update listview with most recent results
 		reports_lv.setAdapter(rowAdapter);
 	}
@@ -149,7 +150,7 @@ public class PRTReports extends Activity {
 						});
 						return view;
 					} catch (Exception e) {
-						Log.e("layoutinflater", e.toString());
+						Log.e(TAG, e.toString());
 					}
 				}
 				return null;
@@ -221,6 +222,7 @@ public class PRTReports extends Activity {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			Log.d(TAG, "Received broadcast");
 			// stopService(serviceIntent);
 			// clear last result
 			reportArray.clear();

@@ -9,6 +9,7 @@ import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
@@ -19,6 +20,7 @@ import com.google.android.maps.OverlayItem;
 
 public class PRTMap extends MapActivity {
 
+	private static final String TAG = "WVUTA::PRTMAP";
 	private MapView map = null;
 	private MapController mc = null;
 	private PRTStationOverlay overlay = null;
@@ -28,6 +30,8 @@ public class PRTMap extends MapActivity {
 		super.onCreate(arg0);
 		setContentView(R.layout.prtmap);
 
+		Log.d(TAG, "PRTMap onCreate");
+		
 		map = (MapView) findViewById(R.id.prt_map);
 		Thread thread = new Thread(null, background, "background");
 		thread.start();
@@ -36,6 +40,7 @@ public class PRTMap extends MapActivity {
 	
 	private Runnable background = new Runnable() {
 		public void run() {
+			Log.d(TAG, "Loading map");
 			initMap();
 		}
 	};

@@ -2,13 +2,14 @@ package org.mockup.wvuta;
 
 import android.app.Activity;
 import android.os.Bundle;
-
-import android.view.*;
+import android.util.Log;
+import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
 import android.widget.Button;
 
 public class BusWebStatus extends Activity implements OnClickListener{
+	private static final String TAG = "WVUTA::BUSWEBSTATUS";
 	private String busStatusUrl = "http://www.busride.org/MyBus/BusFrame.html";
 	private WebView webview;
 	private int xOffset = 0;
@@ -17,6 +18,8 @@ public class BusWebStatus extends Activity implements OnClickListener{
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.busweb);
+		
+		Log.d(TAG, "BusWebStatus onCreate");
 		
 		Button tableButton = (Button) findViewById(R.id.BusTableButton);
 		Button mapButton = (Button) findViewById(R.id.BusMapButton);
@@ -38,10 +41,12 @@ public class BusWebStatus extends Activity implements OnClickListener{
 	public void onClick(View v) {
 		switch (v.getId()){
 		case R.id.BusTableButton:
+			Log.d(TAG, "Scroll to Table");
 			xOffset = 0;
 			yOffset = 0;
 			break;
 		case R.id.BusMapButton:
+			Log.d(TAG, "Scroll to Map");
 			xOffset = 1000;
 			yOffset = 125;
 			break;

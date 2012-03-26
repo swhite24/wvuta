@@ -1,5 +1,7 @@
 package org.mockup.wvuta;
 
+import java.util.HashMap;
+
 import android.provider.BaseColumns;
 
 public interface Constants extends BaseColumns{
@@ -43,4 +45,8 @@ public interface Constants extends BaseColumns{
 	
 	public static final Double wLat = 39.630057797004916*1E6;
 	public static final Double wLon = -79.95726093649864*1E6;
+	
+	public static final HashMap<String, String> current = new HashMap<String, String>();
+	public static final HashMap<String, String> updated = new HashMap<String, String>();
+	
 }

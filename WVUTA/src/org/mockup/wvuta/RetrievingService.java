@@ -29,8 +29,9 @@ import android.util.Log;
 
 public class RetrievingService extends Service {
 
-	ReportLookupTask task = null;
+	private ReportLookupTask task = null;
 	public static final String REPORTS = "org.mockup.wvuta.REPORTS";
+	private static final String TAG = "WVUTA::RetrievingService";
 	private final ArrayList<String> reportArray = new ArrayList<String>();
 
 	@Override
@@ -41,6 +42,7 @@ public class RetrievingService extends Service {
 
 	@Override
 	public void onCreate() {
+		Log.d(TAG, "RetrievingService onCreate");
 		getDBInfo();
 		super.onCreate();
 	}
@@ -53,7 +55,7 @@ public class RetrievingService extends Service {
 
 	}
 
-	public void getDBInfo() {
+	private void getDBInfo() {
 		// create ASyncTask to put server communication in background
 		if (task == null || task.getStatus().equals(AsyncTask.Status.FINISHED)) {
 			task = new ReportLookupTask();
@@ -61,8 +63,9 @@ public class RetrievingService extends Service {
 		}
 	}
 
-	public void announceResults() {
+	private void announceResults() {
 		// broadcast results
+		Log.d(TAG, "Broadcasting report retrieval results");
 		Intent intent = new Intent(REPORTS);
 		intent.putStringArrayListExtra("strings", reportArray);
 		sendBroadcast(intent);
@@ -87,7 +90,7 @@ public class RetrievingService extends Service {
 					"location", null)));
 			al.add(new BasicNameValuePair("status", prefs.getString("status",
 					null)));
-			Log.d("loc/stat",
+			Log.d(TAG,
 					prefs.getString("location", "x") + " "
 							+ prefs.getString("status", "y"));
 
@@ -101,7 +104,7 @@ public class RetrievingService extends Service {
 				HttpEntity entity = httpresponse.getEntity();
 				inStream = entity.getContent();
 			} catch (Exception e) {
-				Log.e("CurrentStatus", "failed to connect: " + e.toString());
+				Log.e(TAG, "failed to connect: " + e.toString());
 			}
 
 			// read response
@@ -114,7 +117,7 @@ public class RetrievingService extends Service {
 				}
 				inStream.close();
 			} catch (Exception e) {
-				Log.e("CurrentStatus", "failed to read: " + e.toString());
+				Log.e(TAG, "failed to read: " + e.toString());
 			}
 			output.append(String.format("%-15.15s%-15.15s\n", "Status:",
 					"Location:"));
@@ -145,20 +148,13 @@ public class RetrievingService extends Service {
 				reportArray.add(" ");
 				reportArray.add(" ");
 				reportArray.add("No results to display");
-				Log.e("CurrentStatus", "failed to extract: " + e.toString());
+				Log.e(TAG, "failed to extract: " + e.toString());
 			}
 
 			result = output.toString();
 			announceResults();
 			return result;
 		}
-
-		@Override
-		protected void onPostExecute(String result) {
-			super.onPostExecute(result);
-
-		}
-
 	};
 
 }

@@ -1,10 +1,13 @@
 package org.mockup.wvuta;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -12,13 +15,18 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class WVUTransportationAppActivity extends Activity implements OnClickListener{
+public class Main extends Activity implements OnClickListener{
+	private static final String TAG = "WVUTA::MAIN";
 	private MediaPlayer mp;
-
+	private AlarmManager am;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		
+		Log.d(TAG, "Main onCreate");
+		
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 		// setup listeners
 		Button prtButton = (Button) findViewById(R.id.mainPRTViewStatusButton);
@@ -27,6 +35,8 @@ public class WVUTransportationAppActivity extends Activity implements OnClickLis
 		prtReportButton.setOnClickListener(this);
 		Button busButton = (Button) findViewById(R.id.mainBusButton);
 		busButton.setOnClickListener(this);
+		
+		am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 	}
 
 	@Override
@@ -51,7 +61,7 @@ public class WVUTransportationAppActivity extends Activity implements OnClickLis
 				mp.release();
 			}
 			mp = MediaPlayer.create(this, R.raw.homescreen2);
-			mp.start();
+			//mp.start();
 
 		}
 		return true;

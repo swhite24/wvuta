@@ -25,8 +25,9 @@ import android.util.Log;
 
 public class ReportingService extends Service {
 
-	SendReportTask task = null;
+	private SendReportTask task = null;
 	public static final String REPORTING = "org.mockup.wvuta.REPORTING";
+	private static final String TAG = "WVUTA::REPORTINGSERVICE";
 	
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -36,6 +37,7 @@ public class ReportingService extends Service {
 
 	@Override
 	public void onCreate() {
+		Log.d(TAG, "ReportingService onCreate");
 		sendReport();
 		super.onCreate();
 	}
@@ -54,8 +56,9 @@ public class ReportingService extends Service {
 		}
 	}
 	
-	public void announceResult(String result){
+	private void announceResult(String result){
 		// Broadcast response from server
+		Log.d(TAG, "Broadcasting report result");
 		Intent intent = new Intent(REPORTING);
 		intent.putExtra("response", result);
 		sendBroadcast(intent);
@@ -91,7 +94,7 @@ public class ReportingService extends Service {
 				HttpEntity entity = response.getEntity();
 				inStream = entity.getContent();
 			} catch (Exception e) {
-				Log.e("phpsubmit", "Connection issue: " + e.toString());
+				Log.e(TAG, "Connection issue: " + e.toString());
 			}
 
 			// Read Response from server
@@ -104,7 +107,7 @@ public class ReportingService extends Service {
 				}
 				inStream.close();
 			} catch (Exception e) {
-				Log.e("phpSubmit", "\nReading issue: " + e.toString());
+				Log.e(TAG, "\nReading issue: " + e.toString());
 			}
 			String result = builder.toString();
 			announceResult(result);

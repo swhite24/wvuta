@@ -3,15 +3,20 @@ package org.mockup.wvuta;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TabHost;
 
 public class PRTTab extends TabActivity {
 
+	private static final String TAG = "WVUTA::PRTTAB";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.prttab);
 
+		Log.d(TAG, "PRTTab onCreate");
+		
 		TabHost tab_host = getTabHost();
 		TabHost.TabSpec spec;
 		Intent intent;

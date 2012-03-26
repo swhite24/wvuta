@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-	<string-array name="notifcationOptions">
-	    <item>Text</item>
-	    <item>Email</item>
-	</string-array>
 	<string-array name="update_freq_titles">
 	    <item>15 minutes</item>
 	    <item>30 minutes</item>
