@@ -5,4 +5,7 @@
         <item name="android:layout_marginTop">30dip</item>
         <item name="android:textColor">@color/Background</item>
     </style>
+    <style name="all_activities">
+        <item name="android:background">@color/Background</item>
+    </style>
 </resources>

@@ -15,19 +15,15 @@ About WVU Transportation App.  About WVU Transportation App.
 About WVU Transportation App.  About WVU Transportation App.  
 About WVU Transportation App.  About WVU Transportation App.</string>
 	<string name="prtMainTitle">PRT Section</string>
-	<string name="prtStatus">Current PRT Status</string>
 	<string name="prtReportStatus">Report PRT Status</string>
-	<string name="busMainTitle">Bus Section</string>
 	<string name="submitButton">Submit</string>
 	<string name="busWebTitle">Bus Status</string>
 	<string name="downLabel">Down</string>
 	<string name="runningLabel">Running</string>
-	<string name="submissionLabel">Submission</string>
 	<string name="acceptedSubmissionText">Submission accepted</string>
 	<string name="denySubmissionText">Submission not accepted.  Choose a status and location.</string>
 	<string name="submissionLimitExceededText">Submission not accepted.  Please wait to report again.</string>
 	<string name="helpLabel">Help</string>
-	<string name="prtHistory">Reporting History</string>
 	<string name="prtViewStatus">View PRT Status</string>
 	<string name="menuSettingsLabel">Settings</string>
 	<string name="menuSettingsShortcut">S</string>

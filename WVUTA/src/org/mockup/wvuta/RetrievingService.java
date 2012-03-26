@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -33,6 +34,7 @@ public class RetrievingService extends Service {
 	public static final String REPORTS = "org.mockup.wvuta.REPORTS";
 	private static final String TAG = "WVUTA::RetrievingService";
 	private final ArrayList<String> reportArray = new ArrayList<String>();
+	private boolean error = false;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -69,7 +71,70 @@ public class RetrievingService extends Service {
 		Intent intent = new Intent(REPORTS);
 		intent.putStringArrayListExtra("strings", reportArray);
 		sendBroadcast(intent);
+		updateLatest();
 		stopSelf();
+	}
+
+	private void updateLatest() {
+		if (!error) {
+			String beech_status = null;
+			String eng_status = null;
+			String med_status = null;
+			String tow_status = null;
+			String wal_status = null;
+
+			Iterator<String> it = reportArray.iterator();
+			while (it.hasNext()) {
+				String status = it.next();
+				String time = it.next();
+				String location = it.next();
+
+				if (beech_status == null
+						&& location.equalsIgnoreCase("beechurst"))
+					beech_status = status;
+				if (eng_status == null
+						&& location.equalsIgnoreCase("engineering"))
+					eng_status = status;
+				if (med_status == null && location.equalsIgnoreCase("medical"))
+					med_status = status;
+				if (tow_status == null && location.equalsIgnoreCase("towers"))
+					tow_status = status;
+				if (wal_status == null && location.equalsIgnoreCase("walnut"))
+					wal_status = status;
+			}
+
+			Constants.updated.put("BEECHURST", beech_status);
+			Constants.updated.put("ENGINEERING", eng_status);
+			Constants.updated.put("MEDICAL", med_status);
+			Constants.updated.put("TOWERS", tow_status);
+			Constants.updated.put("WALNUT", wal_status);
+			checkLatest();
+		}
+	}
+
+	private void checkLatest() {
+		if (!Constants.current.get("BEECHURST").equals(
+				Constants.updated.get("BEECHURST"))) {
+			Constants.current.put("BEECHURST",
+					Constants.updated.get("BEECHURST"));
+		}
+		if (!Constants.current.get("ENGINEERING").equals(
+				Constants.updated.get("ENGINEERING"))) {
+			Constants.current.put("ENGINEERING",
+					Constants.updated.get("ENGINEERING"));
+		}
+		if (!Constants.current.get("MEDICAL").equals(
+				Constants.updated.get("MEDICAL"))) {
+			Constants.current.put("MEDICAL", Constants.updated.get("MEDICAL"));
+		}
+		if (!Constants.current.get("TOWERS").equals(
+				Constants.updated.get("TOWERS"))) {
+			Constants.current.put("TOWERS", Constants.updated.get("TOWERS"));
+		}
+		if (!Constants.current.get("WALNUT").equals(
+				Constants.updated.get("WALNUT"))) {
+			Constants.current.put("WALNUT", Constants.updated.get("WALNUT"));
+		}
 	}
 
 	private class ReportLookupTask extends AsyncTask<Void, Void, String> {
@@ -83,7 +148,7 @@ public class RetrievingService extends Service {
 
 			SharedPreferences prefs = getSharedPreferences(Constants.TABLENAME,
 					Context.MODE_PRIVATE);
-			
+
 			// put filters, null or not, into ArrayList to send to server
 			ArrayList<NameValuePair> al = new ArrayList<NameValuePair>();
 			al.add(new BasicNameValuePair("location", prefs.getString(
@@ -135,7 +200,7 @@ public class RetrievingService extends Service {
 
 					SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
 					Date date = df.parse(time);
-					date.setHours(date.getHours()+3);
+					date.setHours(date.getHours() + 3);
 					String newTime = DateFormat.getTimeInstance(
 							DateFormat.SHORT).format(date);
 
@@ -144,6 +209,7 @@ public class RetrievingService extends Service {
 					reportArray.add(location);
 				}
 			} catch (Exception e) {
+				error = true;
 				output.append("No results to display");
 				reportArray.add(" ");
 				reportArray.add(" ");

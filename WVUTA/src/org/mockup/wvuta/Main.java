@@ -15,19 +15,17 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class Main extends Activity implements OnClickListener{
+public class Main extends Activity implements OnClickListener {
 	private static final String TAG = "WVUTA::MAIN";
-	private MediaPlayer mp;
 	private AlarmManager am;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		
+
 		Log.d(TAG, "Main onCreate");
-		
-		setVolumeControlStream(AudioManager.STREAM_MUSIC);
+
 		// setup listeners
 		Button prtButton = (Button) findViewById(R.id.mainPRTViewStatusButton);
 		prtButton.setOnClickListener(this);
@@ -35,7 +33,8 @@ public class Main extends Activity implements OnClickListener{
 		prtReportButton.setOnClickListener(this);
 		Button busButton = (Button) findViewById(R.id.mainBusButton);
 		busButton.setOnClickListener(this);
-		
+
+		check_maps();
 		am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 	}
 
@@ -57,16 +56,26 @@ public class Main extends Activity implements OnClickListener{
 			startActivity(new Intent(this, About.class));
 			break;
 		case R.id.menuHelp:
-			if (mp != null) {
-				mp.release();
-			}
-			mp = MediaPlayer.create(this, R.raw.homescreen2);
-			//mp.start();
-
+			break;
 		}
 		return true;
 	}
-
+	
+	private void check_maps(){
+		if (Constants.current.isEmpty()){
+			Constants.current.put("BEECHURST", "unknown");
+			Constants.current.put("ENGINEERING", "unknown");
+			Constants.current.put("MEDICAL", "unknown");
+			Constants.current.put("TOWERS", "unknown");
+			Constants.current.put("WALNUT", "unknown");
+			
+			Constants.updated.put("BEECHURST", "unknown");
+			Constants.updated.put("ENGINEERING", "unknown");
+			Constants.updated.put("MEDICAL", "unknown");
+			Constants.updated.put("TOWERS", "unknown");
+			Constants.updated.put("WALNUT", "unknown");
+		}
+	}
 
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -85,6 +94,5 @@ public class Main extends Activity implements OnClickListener{
 
 		}
 
-		
 	}
 }

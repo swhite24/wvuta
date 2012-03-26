@@ -43,11 +43,6 @@
         <activity
             android:name=".PRTMap"
             android:label="PRT" />
-        
-		<activity 
-			android:name=".BusMain"
-			android:label="@string/busMainTitle">
-		</activity>
 		<activity 
 			android:name=".BusWebStatus"
 			android:label="@string/busWebTitle">
@@ -55,24 +50,6 @@
 		<activity
 			android:name=".PRTReportStatus"
 			android:label="@string/prtReportStatus">
-		</activity>
-		<activity
-			android:name=".PRTCurrentStatus"
-			android:label="@string/prtStatus">
-		</activity>
-		<activity
-			android:name=".AcceptSubmission"
-			android:label="@string/submissionLabel"
-			android:theme="@android:style/Theme.Dialog">
-		</activity>
-		<activity
-			android:name=".DenySubmission"
-			android:label="@string/submissionLabel"
-			android:theme="@android:style/Theme.Dialog">
-		</activity>
-		<activity
-			android:name=".PRTViewHistory"
-			android:label="@string/prtHistory">
 		</activity>
 		<activity
 			android:name=".Prefs"

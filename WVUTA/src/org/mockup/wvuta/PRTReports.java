@@ -96,9 +96,11 @@ public class PRTReports extends Activity {
 		unregisterReceiver(receiver);
 		super.onPause();
 	}
-
+	
+	/**
+	 * Add headers to the three columns in ListView
+	 */
 	private void addHeader() {
-		// add headers to the three columns in listview
 		LayoutInflater inflater = getLayoutInflater();
 		header = (ViewGroup) inflater.inflate(R.layout.listheader, reports_lv,
 				false);
@@ -107,6 +109,9 @@ public class PRTReports extends Activity {
 
 	private Intent serviceIntent;
 
+	/**
+	 * Sets default text and starts service to retrieve latest reports from server.
+	 */
 	private void getDBInfo() {
 		Log.d(TAG, "Retrieving latest reports");
 		defaultText();
@@ -114,8 +119,10 @@ public class PRTReports extends Activity {
 		startService(serviceIntent);
 	}
 
+	/**
+	 * Sets text in ListView to something to let user know system is working
+	 */
 	private void defaultText() {
-		// sets text in listview to something to let user know system is working
 		reportArray.clear();
 		Report temp = new Report("...Retrieving data from server...", null,
 				null);
@@ -125,8 +132,10 @@ public class PRTReports extends Activity {
 		updateInfo();
 	}
 
+	/**
+	 * Update ListView with most recent results
+	 */
 	private void updateInfo() {
-		// update listview with most recent results
 		reports_lv.setAdapter(rowAdapter);
 	}
 
@@ -217,7 +226,12 @@ public class PRTReports extends Activity {
 		}
 		return true;
 	}
-
+	/**
+	 * BroadcastReceiver to receive results from RetrievingService.  Extracts
+	 * String ArrayList and compiles it into a list of reports.
+	 * @author Steve
+	 *
+	 */
 	public class ReportReceiver extends BroadcastReceiver {
 
 		@Override
