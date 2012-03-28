@@ -14,7 +14,8 @@
     	<uses-library android:name="com.google.android.maps" />
         <activity 
         	android:name=".Main"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -23,37 +24,46 @@
         <activity 
         	android:name=".About"
         	android:label="@string/aboutTitle"
-        	android:theme="@android:style/Theme.Dialog">
+        	android:theme="@android:style/Theme.Dialog"
+            android:screenOrientation="portrait">
         </activity>
         <activity
         	android:name=".PRTMain"
-        	android:label="@string/prtMainTitle">
+        	android:label="@string/prtMainTitle"
+            android:screenOrientation="portrait">
         </activity>
         <activity 
             android:name=".PRTTab"
             android:label="PRT"
-            android:theme="@android:style/Theme.NoTitleBar">            
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:screenOrientation="portrait">            
         </activity>
         <activity
             android:name=".PRTSummary"
-            android:label="PRT" />
+            android:label="PRT" 
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".PRTReports"
-            android:label="PRT" />
+            android:label="PRT" 
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".PRTMap"
-            android:label="PRT" />
+            android:label="PRT" 
+            android:screenOrientation="portrait"/>
 		<activity 
 			android:name=".BusWebStatus"
-			android:label="@string/busWebTitle">
+			android:label="@string/busWebTitle"
+            android:screenOrientation="portrait">
 		</activity>
 		<activity
 			android:name=".PRTReportStatus"
-			android:label="@string/prtReportStatus">
+			android:label="@string/prtReportStatus"
+            android:screenOrientation="portrait">
 		</activity>
 		<activity
 			android:name=".Prefs"
-			android:label="@string/menuSettingsLabel">
+			android:label="@string/menuSettingsLabel"
+            android:screenOrientation="portrait">
 		</activity>
 		<service 
 		    android:enabled="true"

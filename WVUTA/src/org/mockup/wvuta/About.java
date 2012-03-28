@@ -14,4 +14,4 @@ public class About extends Activity{
 		Log.d(TAG, "AboutActivity onCreate");
 	}
 
-}
+} 

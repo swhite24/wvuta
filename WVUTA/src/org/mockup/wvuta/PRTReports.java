@@ -77,8 +77,6 @@ public class PRTReports extends Activity {
 				}
 			}
 		});
-		
-		getDBInfo();
 	}
 
 	@Override
@@ -87,6 +85,7 @@ public class PRTReports extends Activity {
 		IntentFilter filter = new IntentFilter(RetrievingService.REPORTS);
 		receiver = new ReportReceiver();
 		registerReceiver(receiver, filter);
+		getDBInfo();
 		super.onResume();
 	}
 
@@ -96,7 +95,7 @@ public class PRTReports extends Activity {
 		unregisterReceiver(receiver);
 		super.onPause();
 	}
-	
+
 	/**
 	 * Add headers to the three columns in ListView
 	 */
@@ -110,7 +109,8 @@ public class PRTReports extends Activity {
 	private Intent serviceIntent;
 
 	/**
-	 * Sets default text and starts service to retrieve latest reports from server.
+	 * Sets default text and starts service to retrieve latest reports from
+	 * server.
 	 */
 	private void getDBInfo() {
 		Log.d(TAG, "Retrieving latest reports");
@@ -226,11 +226,13 @@ public class PRTReports extends Activity {
 		}
 		return true;
 	}
+
 	/**
-	 * BroadcastReceiver to receive results from RetrievingService.  Extracts
+	 * BroadcastReceiver to receive results from RetrievingService. Extracts
 	 * String ArrayList and compiles it into a list of reports.
+	 * 
 	 * @author Steve
-	 *
+	 * 
 	 */
 	public class ReportReceiver extends BroadcastReceiver {
 
@@ -253,8 +255,8 @@ public class PRTReports extends Activity {
 			}
 
 			// re-initialize rowAdapter with updated Reports
-			rowAdapter = new RowAdapter(PRTReports.this,
-					R.layout.rowcustom, reportArray);
+			rowAdapter = new RowAdapter(PRTReports.this, R.layout.rowcustom,
+					reportArray);
 			updateInfo();
 		}
 

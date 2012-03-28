@@ -56,7 +56,8 @@ public class PRTReportStatus extends Activity implements OnClickListener {
 		Spinner locations = (Spinner) findViewById(R.id.location_spinner);
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
 				this, R.array.location_spinner_options,
-				android.R.layout.simple_spinner_dropdown_item);
+				android.R.layout.simple_spinner_item);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		locations.setAdapter(adapter);
 		locations.setOnItemSelectedListener(new SpinnerSelectedListener());
 
@@ -105,11 +106,11 @@ public class PRTReportStatus extends Activity implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.downRB:
 			upDown = true;
-			statusString = "down";
+			statusString = "Down";
 			break;
 		case R.id.runningRB:
 			upDown = true;
-			statusString = "up";
+			statusString = "Up";
 			break;
 		case R.id.prtSubmitButton:
 			// status & location selected = accept

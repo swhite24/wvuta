@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -60,20 +60,18 @@ public class Main extends Activity implements OnClickListener {
 		}
 		return true;
 	}
-	
-	private void check_maps(){
-		if (Constants.current.isEmpty()){
-			Constants.current.put("BEECHURST", "unknown");
-			Constants.current.put("ENGINEERING", "unknown");
-			Constants.current.put("MEDICAL", "unknown");
-			Constants.current.put("TOWERS", "unknown");
-			Constants.current.put("WALNUT", "unknown");
-			
-			Constants.updated.put("BEECHURST", "unknown");
-			Constants.updated.put("ENGINEERING", "unknown");
-			Constants.updated.put("MEDICAL", "unknown");
-			Constants.updated.put("TOWERS", "unknown");
-			Constants.updated.put("WALNUT", "unknown");
+
+	private void check_maps() {
+		SharedPreferences prefs = getSharedPreferences(Constants.LATEST,
+				Context.MODE_PRIVATE);
+		if (!prefs.contains(Constants.BEECHURST)){
+			Editor ed = prefs.edit();
+			ed.putString(Constants.BEECHURST, "Unknown");
+			ed.putString(Constants.ENGINEERING, "Unknown");
+			ed.putString(Constants.MEDICAL, "Unknown");
+			ed.putString(Constants.TOWERS, "Unknown");
+			ed.putString(Constants.WALNUT, "Unknown");
+			ed.commit();
 		}
 	}
 

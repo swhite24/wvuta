@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.TimeZone;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -24,6 +25,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.util.Log;
@@ -38,7 +40,6 @@ public class RetrievingService extends Service {
 
 	@Override
 	public IBinder onBind(Intent intent) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -68,10 +69,11 @@ public class RetrievingService extends Service {
 	private void announceResults() {
 		// broadcast results
 		Log.d(TAG, "Broadcasting report retrieval results");
-		Intent intent = new Intent(REPORTS);
+		Intent intent;
+		intent = new Intent(REPORTS);
 		intent.putStringArrayListExtra("strings", reportArray);
-		sendBroadcast(intent);
 		updateLatest();
+		sendBroadcast(intent);
 		stopSelf();
 	}
 
@@ -86,7 +88,7 @@ public class RetrievingService extends Service {
 			Iterator<String> it = reportArray.iterator();
 			while (it.hasNext()) {
 				String status = it.next();
-				String time = it.next();
+				it.next();
 				String location = it.next();
 
 				if (beech_status == null
@@ -103,37 +105,28 @@ public class RetrievingService extends Service {
 					wal_status = status;
 			}
 
-			Constants.updated.put("BEECHURST", beech_status);
-			Constants.updated.put("ENGINEERING", eng_status);
-			Constants.updated.put("MEDICAL", med_status);
-			Constants.updated.put("TOWERS", tow_status);
-			Constants.updated.put("WALNUT", wal_status);
-			checkLatest();
-		}
-	}
+			SharedPreferences prefs = getSharedPreferences(Constants.LATEST,
+					Context.MODE_PRIVATE);
+			Editor ed = prefs.edit();
+			if (!prefs.getString(Constants.BEECHURST, null)
+					.equals(beech_status)) {
+				ed.putString(Constants.BEECHURST, beech_status);
+			}
+			if (!prefs.getString(Constants.ENGINEERING, null)
+					.equals(eng_status)) {
+				ed.putString(Constants.ENGINEERING, eng_status);
+			}
+			if (!prefs.getString(Constants.MEDICAL, null).equals(med_status)) {
+				ed.putString(Constants.MEDICAL, med_status);
+			}
+			if (!prefs.getString(Constants.TOWERS, null).equals(tow_status)) {
+				ed.putString(Constants.TOWERS, tow_status);
+			}
+			if (!prefs.getString(Constants.WALNUT, null).equals(wal_status)) {
+				ed.putString(Constants.WALNUT, wal_status);
+			}
 
-	private void checkLatest() {
-		if (!Constants.current.get("BEECHURST").equals(
-				Constants.updated.get("BEECHURST"))) {
-			Constants.current.put("BEECHURST",
-					Constants.updated.get("BEECHURST"));
-		}
-		if (!Constants.current.get("ENGINEERING").equals(
-				Constants.updated.get("ENGINEERING"))) {
-			Constants.current.put("ENGINEERING",
-					Constants.updated.get("ENGINEERING"));
-		}
-		if (!Constants.current.get("MEDICAL").equals(
-				Constants.updated.get("MEDICAL"))) {
-			Constants.current.put("MEDICAL", Constants.updated.get("MEDICAL"));
-		}
-		if (!Constants.current.get("TOWERS").equals(
-				Constants.updated.get("TOWERS"))) {
-			Constants.current.put("TOWERS", Constants.updated.get("TOWERS"));
-		}
-		if (!Constants.current.get("WALNUT").equals(
-				Constants.updated.get("WALNUT"))) {
-			Constants.current.put("WALNUT", Constants.updated.get("WALNUT"));
+			ed.commit();
 		}
 	}
 
@@ -197,16 +190,22 @@ public class RetrievingService extends Service {
 					String status = jobj.getString("status");
 					int space = jobj.getString("time").indexOf(" ");
 					String time = jobj.getString("time").substring(space + 1);
+					SimpleDateFormat df1 = new SimpleDateFormat(
+							"yyyy-MM-dd HH:mm:ss");
+					df1.setTimeZone(TimeZone.getTimeZone("est"));
+					Date date1 = df1.parse(jobj.getString("time"));
+					Log.d(TAG, "original: " + jobj.getString("time"));
+					Log.d(TAG, "df1: " + date1.toString());
 
 					SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
 					Date date = df.parse(time);
 					date.setHours(date.getHours() + 3);
 					String newTime = DateFormat.getTimeInstance(
 							DateFormat.SHORT).format(date);
-
 					reportArray.add(status);
 					reportArray.add(newTime);
 					reportArray.add(location);
+
 				}
 			} catch (Exception e) {
 				error = true;
