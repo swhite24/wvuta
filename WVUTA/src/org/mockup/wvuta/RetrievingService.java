@@ -36,6 +36,7 @@ public class RetrievingService extends Service {
 	public static final String REPORTS = "org.mockup.wvuta.REPORTS";
 	private static final String TAG = "WVUTA::RetrievingService";
 	private final ArrayList<String> reportArray = new ArrayList<String>();
+	private ArrayList<Report> reports = new ArrayList<Report>();
 	private boolean error = false;
 
 	@Override
@@ -58,6 +59,9 @@ public class RetrievingService extends Service {
 
 	}
 
+	/**
+	 * Starts a new ReportLookupTask with provided filters.
+	 */
 	private void getDBInfo() {
 		// create ASyncTask to put server communication in background
 		if (task == null || task.getStatus().equals(AsyncTask.Status.FINISHED)) {
@@ -66,6 +70,9 @@ public class RetrievingService extends Service {
 		}
 	}
 
+	/**
+	 * Broadcasts results of latest reports.
+	 */
 	private void announceResults() {
 		// broadcast results
 		Log.d(TAG, "Broadcasting report retrieval results");
@@ -77,6 +84,9 @@ public class RetrievingService extends Service {
 		stopSelf();
 	}
 
+	/**
+	 * Updates preferences with latest status and source for each station.
+	 */
 	private void updateLatest() {
 		if (!error) {
 			String beech_status = null;
@@ -222,6 +232,9 @@ public class RetrievingService extends Service {
 					date.setHours(date.getHours() + 3);
 					String newTime = DateFormat.getTimeInstance(
 							DateFormat.SHORT).format(date);
+
+					reports.add(new Report(location, newTime, status, source));
+
 					reportArray.add(status);
 					reportArray.add(newTime);
 					reportArray.add(location);

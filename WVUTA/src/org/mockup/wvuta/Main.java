@@ -62,9 +62,11 @@ public class Main extends Activity implements OnClickListener {
 	}
 
 	private void check_maps() {
+		Log.d(TAG, "Initializing prefs");
 		SharedPreferences prefs = getSharedPreferences(Constants.LATEST,
 				Context.MODE_PRIVATE);
-		if (!prefs.contains(Constants.BEECHURST)){
+		if (!prefs.contains(Constants.BEECHURST)
+				|| prefs.getString(Constants.BEECHURST, null) == null) {
 			Editor ed = prefs.edit();
 			ed.putString(Constants.BEECHURST, "Unknown");
 			ed.putString(Constants.ENGINEERING, "Unknown");

@@ -9,14 +9,14 @@ import android.widget.TabHost;
 public class PRTTab extends TabActivity {
 
 	private static final String TAG = "WVUTA::PRTTAB";
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.prttab);
 
 		Log.d(TAG, "PRTTab onCreate");
-		
+
 		TabHost tab_host = getTabHost();
 		TabHost.TabSpec spec;
 		Intent intent;
@@ -28,15 +28,20 @@ public class PRTTab extends TabActivity {
 		tab_host.addTab(spec);
 
 		intent = new Intent().setClass(this, PRTReports.class);
-		spec = tab_host.newTabSpec("Reports").setIndicator("Reports", null)
-				.setContent(intent);
+		spec = tab_host.newTabSpec("Reports")
+				.setIndicator("Reports", null).setContent(intent);
+		tab_host.addTab(spec);
+
+		intent = new Intent().setClass(this, PRTTweets.class);
+		spec = tab_host.newTabSpec("Tweets")
+				.setIndicator("Tweets", null).setContent(intent);
 		tab_host.addTab(spec);
 
 		intent = new Intent().setClass(this, PRTMap.class);
 		spec = tab_host.newTabSpec("Map").setIndicator("Map", null)
 				.setContent(intent);
 		tab_host.addTab(spec);
-		
+
 		tab_host.setCurrentTab(0);
 	}
 
