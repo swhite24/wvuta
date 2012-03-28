@@ -71,6 +71,11 @@ public class Main extends Activity implements OnClickListener {
 			ed.putString(Constants.MEDICAL, "Unknown");
 			ed.putString(Constants.TOWERS, "Unknown");
 			ed.putString(Constants.WALNUT, "Unknown");
+			ed.putString("bsource", "user");
+			ed.putString("esource", "user");
+			ed.putString("msource", "user");
+			ed.putString("tsource", "user");
+			ed.putString("wsource", "user");
 			ed.commit();
 		}
 	}

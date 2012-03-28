@@ -20,7 +20,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.IBinder;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 
 public class ReportingService extends Service {
@@ -73,12 +72,10 @@ public class ReportingService extends Service {
 			StringBuilder builder = new StringBuilder();
 			SharedPreferences prefs = getSharedPreferences(Constants.TABLENAME,
 					Context.MODE_PRIVATE);
-			TelephonyManager tm = (TelephonyManager) getBaseContext()
-					.getSystemService(Context.TELEPHONY_SERVICE);
 
 			// add relevant values to ArrayList which will be sent to database
 			ArrayList<NameValuePair> namevaluepair = new ArrayList<NameValuePair>();
-			namevaluepair.add(new BasicNameValuePair("id", tm.getDeviceId()));
+			namevaluepair.add(new BasicNameValuePair("source", "User Report"));
 			namevaluepair.add(new BasicNameValuePair("status", prefs.getString(
 					Constants.STATUS, "unknown")));
 			namevaluepair.add(new BasicNameValuePair("location", prefs.getString(

@@ -91,44 +91,80 @@ public class PRTSummary extends Activity {
 		String tow_text = prefs.getString(Constants.TOWERS, null);
 		String wal_text = prefs.getString(Constants.WALNUT, null);
 
+		String b_status = prefs.getString("bstatus", null);
+		String e_status = prefs.getString("estatus", null);
+		String m_status = prefs.getString("mstatus", null);
+		String t_status = prefs.getString("tstatus", null);
+		String w_status = prefs.getString("wstatus", null);
+
 		if (beech_text != null) {
-			beech.setText(beech_text);
 			if (beech_text.equalsIgnoreCase("up")) {
 				beech.setTextColor(Color.GREEN);
+				beech.setText(beech_text);
 			} else if (beech_text.equalsIgnoreCase("down")) {
-				beech.setTextColor(Color.RED);
+				if (b_status == null || !b_status.equals("wvudot")) {
+					beech.setTextColor(Color.YELLOW);
+					beech.setText("Caution");
+				} else {
+					beech.setTextColor(Color.RED);
+					beech.setText(beech_text);
+				}
 			}
 		}
 		if (eng_text != null) {
-			eng.setText(eng_text);
 			if (eng_text.equalsIgnoreCase("up")) {
 				eng.setTextColor(Color.GREEN);
+				eng.setText(eng_text);
 			} else if (eng_text.equalsIgnoreCase("down")) {
-				eng.setTextColor(Color.RED);
+				if (e_status == null || !e_status.equals("wvudot")) {
+					eng.setTextColor(Color.YELLOW);
+					eng.setText("Caution");
+				} else {
+					eng.setTextColor(Color.RED);
+					eng.setText(eng_text);
+				}
 			}
 		}
 		if (med_text != null) {
-			med.setText(med_text);
 			if (med_text.equalsIgnoreCase("up")) {
 				med.setTextColor(Color.GREEN);
+				med.setText(med_text);
 			} else if (med_text.equalsIgnoreCase("down")) {
-				med.setTextColor(Color.RED);
+				if (m_status == null ||!m_status.equals("wvudot")) {
+					med.setTextColor(Color.YELLOW);
+					med.setText("Caution");
+				} else {
+					med.setTextColor(Color.RED);
+					med.setText(med_text);
+				}
 			}
 		}
 		if (tow_text != null) {
-			tow.setText(tow_text);
 			if (tow_text.equalsIgnoreCase("up")) {
 				tow.setTextColor(Color.GREEN);
+				tow.setText(tow_text);
 			} else if (tow_text.equalsIgnoreCase("down")) {
-				tow.setTextColor(Color.RED);
+				if (t_status == null ||!t_status.equals("wvudot")) {
+					tow.setTextColor(Color.YELLOW);
+					tow.setText("Caution");
+				} else {
+					tow.setTextColor(Color.RED);
+					tow.setText(tow_text);
+				}
 			}
 		}
 		if (wal_text != null) {
-			wal.setText(wal_text);
 			if (wal_text.equalsIgnoreCase("up")) {
 				wal.setTextColor(Color.GREEN);
+				wal.setText(wal_text);
 			} else if (wal_text.equalsIgnoreCase("down")) {
-				wal.setTextColor(Color.RED);
+				if (w_status == null || !w_status.equals("wvudot")) {
+					wal.setTextColor(Color.YELLOW);
+					wal.setText("Caution");
+				} else {
+					wal.setTextColor(Color.RED);
+					wal.setText(wal_text);
+				}
 			}
 		}
 	}

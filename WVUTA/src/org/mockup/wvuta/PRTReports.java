@@ -125,7 +125,7 @@ public class PRTReports extends Activity {
 	private void defaultText() {
 		reportArray.clear();
 		Report temp = new Report("...Retrieving data from server...", null,
-				null);
+				null, null);
 		reportArray.add(temp);
 		rowAdapter = new RowAdapter(PRTReports.this, R.layout.rowcustom,
 				reportArray);
@@ -251,7 +251,8 @@ public class PRTReports extends Activity {
 				String status = i1.next();
 				String time = i1.next();
 				String location = i1.next();
-				reportArray.add(new Report(location, time, status));
+				String source = i1.next();
+				reportArray.add(new Report(location, time, status, source));
 			}
 
 			// re-initialize rowAdapter with updated Reports

@@ -84,46 +84,65 @@ public class RetrievingService extends Service {
 			String med_status = null;
 			String tow_status = null;
 			String wal_status = null;
+			String b_source = null, e_source = null, m_source = null;
+			String t_source = null, w_source = null;
 
 			Iterator<String> it = reportArray.iterator();
+
+			SharedPreferences prefs = getSharedPreferences(Constants.LATEST,
+					Context.MODE_PRIVATE);
 			while (it.hasNext()) {
 				String status = it.next();
 				it.next();
 				String location = it.next();
+				String source = it.next();
 
 				if (beech_status == null
-						&& location.equalsIgnoreCase("beechurst"))
+						&& location.equalsIgnoreCase("beechurst")) {
 					beech_status = status;
+					b_source = source;
+				}
 				if (eng_status == null
-						&& location.equalsIgnoreCase("engineering"))
+						&& location.equalsIgnoreCase("engineering")) {
 					eng_status = status;
-				if (med_status == null && location.equalsIgnoreCase("medical"))
+					e_source = source;
+				}
+				if (med_status == null && location.equalsIgnoreCase("medical")) {
 					med_status = status;
-				if (tow_status == null && location.equalsIgnoreCase("towers"))
+					m_source = source;
+				}
+				if (tow_status == null && location.equalsIgnoreCase("towers")) {
 					tow_status = status;
-				if (wal_status == null && location.equalsIgnoreCase("walnut"))
+					t_source = source;
+				}
+				if (wal_status == null && location.equalsIgnoreCase("walnut")) {
 					wal_status = status;
+					w_source = source;
+				}
 			}
 
-			SharedPreferences prefs = getSharedPreferences(Constants.LATEST,
-					Context.MODE_PRIVATE);
 			Editor ed = prefs.edit();
 			if (!prefs.getString(Constants.BEECHURST, null)
 					.equals(beech_status)) {
 				ed.putString(Constants.BEECHURST, beech_status);
+				ed.putString("bsource", b_source);
 			}
 			if (!prefs.getString(Constants.ENGINEERING, null)
 					.equals(eng_status)) {
 				ed.putString(Constants.ENGINEERING, eng_status);
+				ed.putString("esource", e_source);
 			}
 			if (!prefs.getString(Constants.MEDICAL, null).equals(med_status)) {
 				ed.putString(Constants.MEDICAL, med_status);
+				ed.putString("msource", m_source);
 			}
 			if (!prefs.getString(Constants.TOWERS, null).equals(tow_status)) {
 				ed.putString(Constants.TOWERS, tow_status);
+				ed.putString("tsource", t_source);
 			}
 			if (!prefs.getString(Constants.WALNUT, null).equals(wal_status)) {
 				ed.putString(Constants.WALNUT, wal_status);
+				ed.putString("wsource", w_source);
 			}
 
 			ed.commit();
@@ -186,6 +205,7 @@ public class RetrievingService extends Service {
 				JSONArray jArray = new JSONArray(result);
 				for (int i = 0; i < jArray.length(); i++) {
 					JSONObject jobj = jArray.getJSONObject(i);
+					String source = jobj.getString("source");
 					String location = jobj.getString("location");
 					String status = jobj.getString("status");
 					int space = jobj.getString("time").indexOf(" ");
@@ -205,6 +225,7 @@ public class RetrievingService extends Service {
 					reportArray.add(status);
 					reportArray.add(newTime);
 					reportArray.add(location);
+					reportArray.add(source);
 
 				}
 			} catch (Exception e) {
@@ -213,6 +234,7 @@ public class RetrievingService extends Service {
 				reportArray.add(" ");
 				reportArray.add(" ");
 				reportArray.add("No results to display");
+				reportArray.add(" ");
 				Log.e(TAG, "failed to extract: " + e.toString());
 			}
 

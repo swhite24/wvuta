@@ -4,13 +4,13 @@ package org.mockup.wvuta;
 
 public class Report {
 	
-	private String location, time, status, note;
+	private String location, time, status, source;
 	
-	public Report(String location, String time, String status){
+	public Report(String location, String time, String status, String source){
 		this.location = location;
 		this.time = time;
 		this.status = status;
-		this.note = "User Report";
+		this.source = source;
 	}
 
 	public String getLocation() {
@@ -26,10 +26,10 @@ public class Report {
 	}
 	
 	public void setNote(String note){
-		this.note = note;
+		this.source = note;
 	}
 	
 	public String getNote(){
-		return note;
+		return source;
 	}
 }
