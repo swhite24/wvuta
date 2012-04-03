@@ -76,6 +76,10 @@
 		<service
 		    android:enabled="true"
 		    android:name=".ReportingService">
-		</service>	    
+		</service>	
+		<service
+		    android:enabled="true" 
+		    android:name=".TweetService">		    
+		</service>    
     </application>
 </manifest>

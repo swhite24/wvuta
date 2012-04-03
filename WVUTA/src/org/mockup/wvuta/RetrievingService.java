@@ -4,11 +4,12 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.TimeZone;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -36,7 +37,7 @@ public class RetrievingService extends Service {
 	public static final String REPORTS = "org.mockup.wvuta.REPORTS";
 	private static final String TAG = "WVUTA::RetrievingService";
 	private final ArrayList<String> reportArray = new ArrayList<String>();
-	private ArrayList<Report> reports = new ArrayList<Report>();
+	private ArrayList<String> times = new ArrayList<String>();
 	private boolean error = false;
 
 	@Override
@@ -79,7 +80,9 @@ public class RetrievingService extends Service {
 		Intent intent;
 		intent = new Intent(REPORTS);
 		intent.putStringArrayListExtra("strings", reportArray);
-		updateLatest();
+		if (!times.isEmpty()) {
+			updateLatest();
+		}
 		sendBroadcast(intent);
 		stopSelf();
 	}
@@ -96,65 +99,117 @@ public class RetrievingService extends Service {
 			String wal_status = null;
 			String b_source = null, e_source = null, m_source = null;
 			String t_source = null, w_source = null;
+			String b_time = null, e_time = null, m_time = null;
+			String t_time = null, w_time = null;
 
-			Iterator<String> it = reportArray.iterator();
-
+			Iterator<String> report_it = reportArray.iterator();
+			Iterator<String> time_it = times.iterator();
 			SharedPreferences prefs = getSharedPreferences(Constants.LATEST,
 					Context.MODE_PRIVATE);
-			while (it.hasNext()) {
-				String status = it.next();
-				it.next();
-				String location = it.next();
-				String source = it.next();
-
+			while (report_it.hasNext()) {
+				String status = report_it.next();
+				report_it.next();
+				String location = report_it.next();
+				String source = report_it.next();
+				String time = time_it.next();
 				if (beech_status == null
 						&& location.equalsIgnoreCase("beechurst")) {
 					beech_status = status;
 					b_source = source;
+					b_time = time;
 				}
 				if (eng_status == null
 						&& location.equalsIgnoreCase("engineering")) {
 					eng_status = status;
 					e_source = source;
+					e_time = time;
 				}
 				if (med_status == null && location.equalsIgnoreCase("medical")) {
 					med_status = status;
 					m_source = source;
+					m_time = time;
 				}
 				if (tow_status == null && location.equalsIgnoreCase("towers")) {
 					tow_status = status;
 					t_source = source;
+					t_time = time;
 				}
 				if (wal_status == null && location.equalsIgnoreCase("walnut")) {
 					wal_status = status;
 					w_source = source;
+					w_time = time;
 				}
 			}
 
-			Editor ed = prefs.edit();
-			if (!prefs.getString(Constants.BEECHURST, null)
-					.equals(beech_status)) {
-				ed.putString(Constants.BEECHURST, beech_status);
-				ed.putString("bsource", b_source);
-			}
-			if (!prefs.getString(Constants.ENGINEERING, null)
-					.equals(eng_status)) {
-				ed.putString(Constants.ENGINEERING, eng_status);
-				ed.putString("esource", e_source);
-			}
-			if (!prefs.getString(Constants.MEDICAL, null).equals(med_status)) {
-				ed.putString(Constants.MEDICAL, med_status);
-				ed.putString("msource", m_source);
-			}
-			if (!prefs.getString(Constants.TOWERS, null).equals(tow_status)) {
-				ed.putString(Constants.TOWERS, tow_status);
-				ed.putString("tsource", t_source);
-			}
-			if (!prefs.getString(Constants.WALNUT, null).equals(wal_status)) {
-				ed.putString(Constants.WALNUT, wal_status);
-				ed.putString("wsource", w_source);
+			Date b_date = null, e_date = null, m_date = null, t_date = null, w_date = null;
+			try {
+				b_date = b_time == null ? null : Constants.TWEETFORMAT
+						.parse(b_time);
+				e_date = e_time == null ? null : Constants.TWEETFORMAT
+						.parse(e_time);
+				m_date = m_time == null ? null : Constants.TWEETFORMAT
+						.parse(m_time);
+				t_date = t_time == null ? null : Constants.TWEETFORMAT
+						.parse(t_time);
+				w_date = w_time == null ? null : Constants.TWEETFORMAT
+						.parse(w_time);
+			} catch (ParseException e) {
+				Log.d(TAG, "Couldn't parse dates. top");
 			}
 
+			Date beech = null, eng = null, tow = null, med = null, wal = null;
+			try {
+				beech = Constants.TWEETFORMAT.parse(prefs.getString("btime",
+						null));
+				eng = Constants.TWEETFORMAT.parse(prefs
+						.getString("etime", null));
+				med = Constants.TWEETFORMAT.parse(prefs
+						.getString("mtime", null));
+				tow = Constants.TWEETFORMAT.parse(prefs
+						.getString("ttime", null));
+				wal = Constants.TWEETFORMAT.parse(prefs
+						.getString("wtime", null));
+			} catch (Exception e) {
+				Log.d(TAG, "Couldn't parse dates. bottom");
+			}
+
+			Editor ed = prefs.edit();
+			if (b_date != null && beech != null && b_date.after(beech)) {
+				if (beech_status != null) {
+					ed.putString(Constants.BEECHURST, beech_status);
+					ed.putString("bsource", b_source);
+					ed.putString("btime", b_time);
+				}
+			}
+			if (e_date != null && eng != null && e_date.after(eng)) {
+				if (eng_status != null) {
+					ed.putString(Constants.ENGINEERING, eng_status);
+					ed.putString("esource", e_source);
+					ed.putString("etime", e_time);
+				}
+			}
+			if (m_date != null && med != null && m_date.after(med)) {
+				if (med_status != null) {
+					ed.putString(Constants.MEDICAL, med_status);
+					ed.putString("msource", m_source);
+					ed.putString("mtime", m_time);
+				}
+			}
+			if (t_date != null && tow != null && t_date.after(tow)) {
+				if (tow_status != null) {
+					ed.putString(Constants.TOWERS, tow_status);
+					ed.putString("tsource", t_source);
+					ed.putString("ttime", t_time);
+				}
+			}
+			if (w_date != null && wal != null && w_date.after(wal)) {
+				if (wal_status != null) {
+					ed.putString(Constants.WALNUT, wal_status);
+					ed.putString("wsource", w_source);
+					ed.putString("wtime", w_time);
+				}
+			}
+			Log.d(TAG, "added prefs - reports");
 			ed.commit();
 		}
 	}
@@ -222,10 +277,13 @@ public class RetrievingService extends Service {
 					String time = jobj.getString("time").substring(space + 1);
 					SimpleDateFormat df1 = new SimpleDateFormat(
 							"yyyy-MM-dd HH:mm:ss");
-					df1.setTimeZone(TimeZone.getTimeZone("est"));
+					// df1.setTimeZone(TimeZone.getTimeZone("est"));
 					Date date1 = df1.parse(jobj.getString("time"));
-					Log.d(TAG, "original: " + jobj.getString("time"));
-					Log.d(TAG, "df1: " + date1.toString());
+					date1.setHours(date1.getHours() + 3);
+					// Log.d(TAG, "original: " + jobj.getString("time"));
+					// Log.d(TAG, "df1: " + date1.toString());
+					// Log.d(TAG, "tweet: " +
+					// Constants.TWEETFORMAT.format(date1));
 
 					SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
 					Date date = df.parse(time);
@@ -233,12 +291,15 @@ public class RetrievingService extends Service {
 					String newTime = DateFormat.getTimeInstance(
 							DateFormat.SHORT).format(date);
 
-					reports.add(new Report(location, newTime, status, source));
-
-					reportArray.add(status);
-					reportArray.add(newTime);
-					reportArray.add(location);
-					reportArray.add(source);
+					Calendar cal = Calendar.getInstance();
+					if (cal.get(Calendar.DATE) == date1.getDate()
+							&& cal.get(Calendar.MONTH) == date1.getMonth()) {
+						reportArray.add(status);
+						reportArray.add(newTime);
+						reportArray.add(location);
+						reportArray.add(source);
+						times.add(Constants.TWEETFORMAT.format(date1));
+					}
 
 				}
 			} catch (Exception e) {

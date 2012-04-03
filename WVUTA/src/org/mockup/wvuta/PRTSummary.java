@@ -22,7 +22,8 @@ public class PRTSummary extends Activity {
 	static final int PROGRESS = 0;
 	private TextView beech, eng, med, tow, wal;
 	private Button refresh_button;
-	private StatusReceiver receiver;
+	private ReportReceiver report_receiver;
+	private TweetReceiver tweet_receiver;
 	private ProgressDialog p_dialog;
 
 	@Override
@@ -52,15 +53,19 @@ public class PRTSummary extends Activity {
 
 	@Override
 	protected void onPause() {
-		unregisterReceiver(receiver);
+		unregisterReceiver(report_receiver);
+		unregisterReceiver(tweet_receiver);
 		super.onPause();
 	}
 
 	@Override
 	protected void onResume() {
 		IntentFilter filter = new IntentFilter(RetrievingService.REPORTS);
-		receiver = new StatusReceiver();
-		registerReceiver(receiver, filter);
+		IntentFilter filter1 = new IntentFilter(TweetService.TWEETS);
+		report_receiver = new ReportReceiver();
+		tweet_receiver = new TweetReceiver();
+		registerReceiver(report_receiver, filter);
+		registerReceiver(tweet_receiver, filter1);
 		populate_fields();
 		super.onResume();
 	}
@@ -91,18 +96,18 @@ public class PRTSummary extends Activity {
 		String tow_text = prefs.getString(Constants.TOWERS, null);
 		String wal_text = prefs.getString(Constants.WALNUT, null);
 
-		String b_status = prefs.getString("bstatus", null);
-		String e_status = prefs.getString("estatus", null);
-		String m_status = prefs.getString("mstatus", null);
-		String t_status = prefs.getString("tstatus", null);
-		String w_status = prefs.getString("wstatus", null);
+		String b_source = prefs.getString("bsource", null);
+		String e_source = prefs.getString("esource", null);
+		String m_source = prefs.getString("msource", null);
+		String t_source = prefs.getString("tsource", null);
+		String w_source = prefs.getString("wsource", null);
 
 		if (beech_text != null) {
 			if (beech_text.equalsIgnoreCase("up")) {
 				beech.setTextColor(Color.GREEN);
 				beech.setText(beech_text);
 			} else if (beech_text.equalsIgnoreCase("down")) {
-				if (b_status == null || !b_status.equals("wvudot")) {
+				if (b_source == null || !b_source.equals("WVUDOT")) {
 					beech.setTextColor(Color.YELLOW);
 					beech.setText("Caution");
 				} else {
@@ -116,7 +121,7 @@ public class PRTSummary extends Activity {
 				eng.setTextColor(Color.GREEN);
 				eng.setText(eng_text);
 			} else if (eng_text.equalsIgnoreCase("down")) {
-				if (e_status == null || !e_status.equals("wvudot")) {
+				if (e_source == null || !e_source.equals("WVUDOT")) {
 					eng.setTextColor(Color.YELLOW);
 					eng.setText("Caution");
 				} else {
@@ -130,7 +135,7 @@ public class PRTSummary extends Activity {
 				med.setTextColor(Color.GREEN);
 				med.setText(med_text);
 			} else if (med_text.equalsIgnoreCase("down")) {
-				if (m_status == null ||!m_status.equals("wvudot")) {
+				if (m_source == null || !m_source.equals("WVUDOT")) {
 					med.setTextColor(Color.YELLOW);
 					med.setText("Caution");
 				} else {
@@ -144,7 +149,7 @@ public class PRTSummary extends Activity {
 				tow.setTextColor(Color.GREEN);
 				tow.setText(tow_text);
 			} else if (tow_text.equalsIgnoreCase("down")) {
-				if (t_status == null ||!t_status.equals("wvudot")) {
+				if (t_source == null || !t_source.equals("WVUDOT")) {
 					tow.setTextColor(Color.YELLOW);
 					tow.setText("Caution");
 				} else {
@@ -158,7 +163,7 @@ public class PRTSummary extends Activity {
 				wal.setTextColor(Color.GREEN);
 				wal.setText(wal_text);
 			} else if (wal_text.equalsIgnoreCase("down")) {
-				if (w_status == null || !w_status.equals("wvudot")) {
+				if (w_source == null || !w_source.equals("WVUDOT")) {
 					wal.setTextColor(Color.YELLOW);
 					wal.setText("Caution");
 				} else {
@@ -170,18 +175,36 @@ public class PRTSummary extends Activity {
 	}
 
 	/**
-	 * BroadcastReceiver to be notified when latest statuses have been obtained.
-	 * Calls populated_fields() when broadcast is received.
+	 * BroadcastReceiver to be notified when latest reports have been obtained.
+	 * Starts TweetService on completion.
 	 * 
 	 * @author Steve
 	 * 
 	 */
-	private class StatusReceiver extends BroadcastReceiver {
+	private class ReportReceiver extends BroadcastReceiver {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if (p_dialog != null) {
-				Log.d(TAG, "Received broadcast");
+				Log.d(TAG, "Received reports broadcast");
+				PRTSummary.this.startService(new Intent(PRTSummary.this,
+						TweetService.class));
+			}
+		}
+	}
+
+	/**
+	 * BroadcastReceiver to be notified when latest tweets have been obtained.
+	 * Calls populat_fields() on completion.
+	 * @author Steve
+	 *
+	 */
+	private class TweetReceiver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (p_dialog != null) {
+				Log.d(TAG, "Received tweets broadcast");
 				if (p_dialog.isShowing())
 					dismissDialog(PROGRESS);
 				populate_fields();

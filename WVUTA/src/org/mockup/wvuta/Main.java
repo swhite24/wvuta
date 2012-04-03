@@ -1,5 +1,7 @@
 package org.mockup.wvuta;
 
+import java.util.Calendar;
+
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.content.Context;
@@ -78,6 +80,14 @@ public class Main extends Activity implements OnClickListener {
 			ed.putString("msource", "user");
 			ed.putString("tsource", "user");
 			ed.putString("wsource", "user");
+			Calendar cal = Calendar.getInstance();
+			cal.set(Calendar.MONTH, Calendar.JANUARY);
+			ed.putString("btime", Constants.TWEETFORMAT.format(cal.getTime()));
+			ed.putString("etime", Constants.TWEETFORMAT.format(cal.getTime()));
+			ed.putString("mtime", Constants.TWEETFORMAT.format(cal.getTime()));
+			ed.putString("ttime", Constants.TWEETFORMAT.format(cal.getTime()));
+			ed.putString("wtime", Constants.TWEETFORMAT.format(cal.getTime()));
+			
 			ed.commit();
 		}
 	}

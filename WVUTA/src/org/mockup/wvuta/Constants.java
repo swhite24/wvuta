@@ -1,5 +1,7 @@
 package org.mockup.wvuta;
 
+import java.text.SimpleDateFormat;
+
 import android.provider.BaseColumns;
 
 public interface Constants extends BaseColumns {
@@ -45,5 +47,8 @@ public interface Constants extends BaseColumns {
 	public static final Double wLon = -79.95726093649864 * 1E6;
 
 	public static final String LATEST = "LATEST";
+
+	public static final SimpleDateFormat TWEETFORMAT = new SimpleDateFormat(
+			"(MMM. dd @ hh:mmaa)");
 
 }
