@@ -46,6 +46,10 @@ public class TweetService extends Service {
 		return super.onStartCommand(intent, flags, startId);
 	}
 
+	/**
+	 * Checks times to see if tweets were found, if so check if preferences
+	 * were updated.  Then, broadcast results.
+	 */
 	private void announce_results() {
 		Log.d(TAG, "Broadcasting tweets");
 		if (!times.isEmpty()) {
@@ -99,8 +103,10 @@ public class TweetService extends Service {
 			SimpleDateFormat df = new SimpleDateFormat("(MMM. dd @ hh:mmaa)");
 			if (prt_matcher.find()) {
 				String prt_tweet = prt_matcher.group().toUpperCase();
+				Log.d(TAG, "PRT Tweet: " + prt_tweet);
 				int bus_index = -1;
 				String prt_no_bus = prt_tweet;
+				// remove bus portion if exists
 				if ((bus_index = prt_tweet.indexOf("BUS")) != -1) {
 					prt_no_bus = prt_tweet.substring(0, bus_index);
 				}
@@ -115,20 +121,23 @@ public class TweetService extends Service {
 						Log.d(TAG, "Invalid tweet time format.");
 					}
 				}
-				if (cal.get(Calendar.DATE) == time.getDate()
+				if (time != null && cal.get(Calendar.DATE) == time.getDate()
 						&& cal.get(Calendar.MONTH) == time.getMonth()) {
+					// all stations up
 					if (up_matcher.find()) {
 						beech = "Up";
 						walnut = "Up";
 						eng = "Up";
 						tow = "Up";
 						med = "Up";
+					// all stations down
 					} else if (all_down_matcher.find()) {
 						beech = "Down";
 						walnut = "Down";
 						eng = "Down";
 						tow = "Down";
 						med = "Down";
+					// some station(s) down
 					} else if (down_matcher.find()) {
 						Matcher beech_matcher = beech_pattern
 								.matcher(down_matcher.group());
@@ -206,7 +215,7 @@ public class TweetService extends Service {
 		Iterator<String> time_it = times.iterator();
 		SharedPreferences prefs = getSharedPreferences(Constants.LATEST,
 				Context.MODE_PRIVATE);
-		while (report_it.hasNext()) {
+		while (report_it.hasNext() && time_it.hasNext()) {
 			Report current = report_it.next();
 			String status = current.getStatus();
 			String location = current.getLocation();
