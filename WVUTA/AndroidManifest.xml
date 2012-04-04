@@ -1,85 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="org.mockup.wvuta"
-      android:versionCode="1"
-      android:versionName="1.25">
+    package="org.mockup.wvuta"
+    android:versionCode="1"
+    android:versionName="1.41" >
+
     <uses-sdk android:minSdkVersion="7" />
-	<uses-permission 
-		android:name="android.permission.INTERNET"/>
-	<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <application 
-    	android:icon="@drawable/ya" 
-    	android:label="@string/app_name"
-    	android:debuggable="true">
-    	<uses-library android:name="com.google.android.maps" />
-        <activity 
-        	android:name=".Main"
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <application
+        android:debuggable="true"
+        android:icon="@drawable/ya"
+        android:label="@string/app_name" >
+        <uses-library android:name="com.google.android.maps" />
+
+        <activity
+            android:name=".Main"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity 
-        	android:name=".About"
-        	android:label="@string/aboutTitle"
-        	android:theme="@android:style/Theme.Dialog"
-            android:screenOrientation="portrait">
+        <activity
+            android:name=".About"
+            android:label="@string/aboutTitle"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog" >
         </activity>
         <activity
-        	android:name=".PRTMain"
-        	android:label="@string/prtMainTitle"
-            android:screenOrientation="portrait">
+            android:name=".PRTMain"
+            android:label="@string/prtMainTitle"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity 
+        <activity
             android:name=".PRTTab"
             android:label="PRT"
-            android:theme="@android:style/Theme.NoTitleBar"
-            android:screenOrientation="portrait">            
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity
             android:name=".PRTSummary"
-            android:label="PRT" 
-            android:screenOrientation="portrait"/>
+            android:label="PRT"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".PRTReports"
-            android:label="PRT" 
-            android:screenOrientation="portrait"/>
+            android:label="PRT"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".PRTMap"
-            android:label="PRT" 
-            android:screenOrientation="portrait"/>
+            android:label="PRT"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".PRTTweets"
             android:label="PRT"
             android:screenOrientation="portrait" />
-		<activity 
-			android:name=".BusWebStatus"
-			android:label="@string/busWebTitle"
-            android:screenOrientation="portrait">
-		</activity>
-		<activity
-			android:name=".PRTReportStatus"
-			android:label="@string/prtReportStatus"
-            android:screenOrientation="portrait">
-		</activity>
-		<activity
-			android:name=".Prefs"
-			android:label="@string/menuSettingsLabel"
-            android:screenOrientation="portrait">
-		</activity>
-		<service 
-		    android:enabled="true"
-		    android:name=".RetrievingService">
-		</service>
-		<service
-		    android:enabled="true"
-		    android:name=".ReportingService">
-		</service>	
-		<service
-		    android:enabled="true" 
-		    android:name=".TweetService">		    
-		</service>    
+        <activity
+            android:name=".BusWebStatus"
+            android:label="@string/busWebTitle"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PRTReportStatus"
+            android:label="@string/prtReportStatus"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Prefs"
+            android:label="@string/menuSettingsLabel"
+            android:screenOrientation="portrait" />
+
+        <service
+            android:name=".ReportService"
+            android:enabled="true" />
+        <service
+            android:name=".ReportingService"
+            android:enabled="true" />
+        <service
+            android:name=".TweetService"
+            android:enabled="true" />
+        <service
+            android:name=".ResetService"
+            android:enabled="true" />
+        <service
+            android:name=".UpdateService"
+            android:enabled="true" />
     </application>
+
 </manifest>

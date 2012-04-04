@@ -31,7 +31,7 @@ import android.os.AsyncTask;
 import android.os.IBinder;
 import android.util.Log;
 
-public class RetrievingService extends Service {
+public class ReportService extends Service {
 
 	private ReportLookupTask task = null;
 	public static final String REPORTS = "org.mockup.wvuta.REPORTS";
@@ -277,13 +277,8 @@ public class RetrievingService extends Service {
 					String time = jobj.getString("time").substring(space + 1);
 					SimpleDateFormat df1 = new SimpleDateFormat(
 							"yyyy-MM-dd HH:mm:ss");
-					// df1.setTimeZone(TimeZone.getTimeZone("est"));
 					Date date1 = df1.parse(jobj.getString("time"));
 					date1.setHours(date1.getHours() + 3);
-					// Log.d(TAG, "original: " + jobj.getString("time"));
-					// Log.d(TAG, "df1: " + date1.toString());
-					// Log.d(TAG, "tweet: " +
-					// Constants.TWEETFORMAT.format(date1));
 
 					SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
 					Date date = df.parse(time);

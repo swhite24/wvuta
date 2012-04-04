@@ -43,7 +43,7 @@ public class PRTSummary extends Activity {
 
 			public void onClick(View v) {
 				showDialog(PROGRESS);
-				Intent i = new Intent(PRTSummary.this, RetrievingService.class);
+				Intent i = new Intent(PRTSummary.this, ReportService.class);
 				startService(i);
 			}
 		});
@@ -60,7 +60,7 @@ public class PRTSummary extends Activity {
 
 	@Override
 	protected void onResume() {
-		IntentFilter filter = new IntentFilter(RetrievingService.REPORTS);
+		IntentFilter filter = new IntentFilter(ReportService.REPORTS);
 		IntentFilter filter1 = new IntentFilter(TweetService.TWEETS);
 		report_receiver = new ReportReceiver();
 		tweet_receiver = new TweetReceiver();
@@ -114,6 +114,9 @@ public class PRTSummary extends Activity {
 					beech.setTextColor(Color.RED);
 					beech.setText(beech_text);
 				}
+			} else {
+				beech.setTextColor(Color.WHITE);
+				beech.setText(beech_text);
 			}
 		}
 		if (eng_text != null) {
@@ -128,6 +131,9 @@ public class PRTSummary extends Activity {
 					eng.setTextColor(Color.RED);
 					eng.setText(eng_text);
 				}
+			} else {
+				eng.setTextColor(Color.WHITE);
+				eng.setText(eng_text);
 			}
 		}
 		if (med_text != null) {
@@ -142,6 +148,9 @@ public class PRTSummary extends Activity {
 					med.setTextColor(Color.RED);
 					med.setText(med_text);
 				}
+			} else {
+				med.setTextColor(Color.WHITE);
+				med.setText(med_text);
 			}
 		}
 		if (tow_text != null) {
@@ -156,6 +165,9 @@ public class PRTSummary extends Activity {
 					tow.setTextColor(Color.RED);
 					tow.setText(tow_text);
 				}
+			} else {
+				tow.setTextColor(Color.WHITE);
+				tow.setText(tow_text);
 			}
 		}
 		if (wal_text != null) {
@@ -170,6 +182,9 @@ public class PRTSummary extends Activity {
 					wal.setTextColor(Color.RED);
 					wal.setText(wal_text);
 				}
+			} else {
+				wal.setTextColor(Color.WHITE);
+				wal.setText(wal_text);
 			}
 		}
 	}
@@ -196,8 +211,9 @@ public class PRTSummary extends Activity {
 	/**
 	 * BroadcastReceiver to be notified when latest tweets have been obtained.
 	 * Calls populat_fields() on completion.
+	 * 
 	 * @author Steve
-	 *
+	 * 
 	 */
 	private class TweetReceiver extends BroadcastReceiver {
 

@@ -82,7 +82,7 @@ public class PRTReports extends Activity {
 	@Override
 	public void onResume() {
 		// register receiver to receive broadcast from RetrievingService
-		IntentFilter filter = new IntentFilter(RetrievingService.REPORTS);
+		IntentFilter filter = new IntentFilter(ReportService.REPORTS);
 		receiver = new ReportReceiver();
 		registerReceiver(receiver, filter);
 		getDBInfo();
@@ -115,7 +115,7 @@ public class PRTReports extends Activity {
 	private void getDBInfo() {
 		Log.d(TAG, "Retrieving latest reports");
 		defaultText();
-		serviceIntent = new Intent(this, RetrievingService.class);
+		serviceIntent = new Intent(this, ReportService.class);
 		startService(serviceIntent);
 	}
 
@@ -165,7 +165,7 @@ public class PRTReports extends Activity {
 				return null;
 			}
 		});
-		inflater.inflate(R.menu.currentstatusmenu, menu);
+		inflater.inflate(R.menu.prtreportsmenu, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -238,21 +238,26 @@ public class PRTReports extends Activity {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			Log.d(TAG, "Received broadcast");
+			Log.d(TAG, "Received report broadcast");
 			// stopService(serviceIntent);
 			// clear last result
 			reportArray.clear();
 			// get ArrayList of current result
 			ArrayList<String> temp = intent.getStringArrayListExtra("strings");
-			Iterator<String> i1 = temp.iterator();
+			if (temp.isEmpty()) {
+				reportArray
+						.add(new Report("No Reports Today", null, null, null));
+			} else {
+				Iterator<String> i1 = temp.iterator();
 
-			// every three strings represent a new report
-			while (i1.hasNext()) {
-				String status = i1.next();
-				String time = i1.next();
-				String location = i1.next();
-				String source = i1.next();
-				reportArray.add(new Report(location, time, status, source));
+				// every three strings represent a new report
+				while (i1.hasNext()) {
+					String status = i1.next();
+					String time = i1.next();
+					String location = i1.next();
+					String source = i1.next();
+					reportArray.add(new Report(location, time, status, source));
+				}
 			}
 
 			// re-initialize rowAdapter with updated Reports

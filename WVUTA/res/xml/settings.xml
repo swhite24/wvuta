@@ -17,7 +17,7 @@
 	    	android:key="NOTIFICATION_PREF"
 	    	android:title="@string/notificationTitle"
 	    	android:summary="@string/notificationSummary"
-	    	android:defaultValue="false"/>
+	    	android:defaultValue="true"/>
 	    <ListPreference
 	        android:key="NOTIFICATION_FREQ"
 	        android:title="Notification Frequency"

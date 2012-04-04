@@ -15,6 +15,5 @@ public class Prefs extends PreferenceActivity{
 		addPreferencesFromResource(R.xml.settings);
 		
 		Log.d(TAG, "Prefs onCreate");
-	}
-	
+	}	
 }

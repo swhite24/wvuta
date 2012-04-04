@@ -31,6 +31,7 @@ public class RowAdapter extends ArrayAdapter<Report>{
 		String location = report.getLocation();
 		String status = report.getStatus();
 		
+		// Inflate resource layout
 		if (convertView == null){
 			rowView = new LinearLayout(getContext());
 			String inflate = Context.LAYOUT_INFLATER_SERVICE;
@@ -44,22 +45,7 @@ public class RowAdapter extends ArrayAdapter<Report>{
 		TextView locCol = (TextView) rowView.findViewById(R.id.locCol);
 		TextView statCol = (TextView) rowView.findViewById(R.id.statCol);
 		
-		// change color of text based on status of report
-		
-//		if (status.equals("down")){
-//			datecol.setTextColor(Color.rgb(255, 0, 0));	
-//			locCol.setTextColor(Color.rgb(255, 0, 0));	
-//			statCol.setTextColor(Color.rgb(255, 0, 0));			
-//		}else if (status.equals("up")){
-//			datecol.setTextColor(Color.rgb(0, 255, 0));	
-//			locCol.setTextColor(Color.rgb(0, 255, 0));	
-//			statCol.setTextColor(Color.rgb(0, 255, 0));				
-//		}else{
-//			datecol.setTextColor(Color.rgb(255,255,255));	
-//			locCol.setTextColor(Color.rgb(255,255,255));	
-//			statCol.setTextColor(Color.rgb(255, 255,255));	
-//		}
-		
+		// Set appropriate values
 		datecol.setText(date);
 		locCol.setText(location);
 		statCol.setText(status);

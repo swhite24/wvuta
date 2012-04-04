@@ -76,8 +76,12 @@ public class PRTTweets extends Activity {
 		super.onResume();
 	}
 
+	/**
+	 * Sets default text to tweets_lv to signal to user that Tweets are being
+	 * retrieved, then starts service to retrieve tweets.
+	 */
 	private void getTweets() {
-		Log.d(TAG, "Retrieving WVUDOT tweets.");
+		Log.d(TAG, "Retrieving WVUDOT tweets");
 		defaultText();
 		Intent i = new Intent(this, TweetService.class);
 		startService(i);
@@ -106,12 +110,22 @@ public class PRTTweets extends Activity {
 		tweet_lv.addHeaderView(header);
 	}
 
+	/**
+	 * BroadcastReceiver to receive tweets from WVUDOT.  Populates tweet_lv
+	 * with all tweets available.
+	 * @author Steve
+	 *
+	 */
 	private class TweetReceiver extends BroadcastReceiver {
 
 		@Override
 		public void onReceive(Context arg0, Intent arg1) {
 			Log.d(TAG, "Received tweet broadcast");
 
+			if (TweetService.all_tweets.isEmpty()) {
+				TweetService.all_tweets.add(new Report("No tweets today", null,
+						null, "WVUDOT"));
+			}
 			rowAdapter = new RowAdapter(PRTTweets.this, R.layout.rowcustom,
 					TweetService.all_tweets);
 			tweet_lv.setAdapter(rowAdapter);
