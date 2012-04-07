@@ -10,8 +10,8 @@ import android.content.SharedPreferences.Editor;
 import android.os.IBinder;
 import android.util.Log;
 
-public class ResetService extends Service{
-	private static final String TAG = "WVUTA::RESETSERVICE";
+public class AllUpService extends Service{
+	private static final String TAG = "WVUTA::ALLUPSERVICE";
 	
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -20,7 +20,7 @@ public class ResetService extends Service{
 
 	@Override
 	public void onCreate() {
-		Log.d(TAG, "ResetService onCreate");
+		Log.d(TAG, "AllUpService onCreate");
 		
 		SharedPreferences prefs = getSharedPreferences(Constants.LATEST,
 				Context.MODE_PRIVATE);
@@ -43,10 +43,12 @@ public class ResetService extends Service{
 		String time = Constants.TWEETFORMAT.format(cal.getTime());
 		
 		ed.putString("btime", time);
-		ed.putString("btime", time);
-		ed.putString("btime", time);
-		ed.putString("btime", time);
-		ed.putString("btime", time);
+		ed.putString("etime", time);
+		ed.putString("mtime", time);
+		ed.putString("ttime", time);
+		ed.putString("wtime", time);
+		
+		ed.commit();
 		
 		Log.d(TAG, "Finished reset.");
 		

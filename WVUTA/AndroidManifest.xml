@@ -81,7 +81,7 @@
             android:name=".TweetService"
             android:enabled="true" />
         <service
-            android:name=".ResetService"
+            android:name=".AllUpService"
             android:enabled="true" />
         <service
             android:name=".UpdateService"

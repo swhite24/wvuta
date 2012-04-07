@@ -40,7 +40,7 @@ public class Main extends Activity implements OnClickListener {
 
 		check_maps();
 		setup_alarms();
-	}	
+	}
 
 	@Override
 	protected void onResume() {
@@ -95,15 +95,24 @@ public class Main extends Activity implements OnClickListener {
 			cal.set(Calendar.DATE, cal.get(Calendar.DATE) + 1);
 
 			PendingIntent pintent = PendingIntent.getService(this, 0,
-					new Intent(this, ResetService.class), 0);
+					new Intent(this, AllUpService.class), 0);
 			am.setRepeating(AlarmManager.RTC, cal.getTimeInMillis(),
 					AlarmManager.INTERVAL_DAY, pintent);
+			Log.d(TAG, "Set AllUpService Alarm starting at "
+					+ Constants.TWEETFORMAT.format(cal.getTime()));
+
+			pintent = PendingIntent.getService(this, 0, new Intent(this,
+					AllDownService.class), 0);
+
+			cal.set(Calendar.HOUR, 6);
+			am.setRepeating(AlarmManager.RTC, cal.getTimeInMillis(),
+					AlarmManager.INTERVAL_DAY, pintent);
+			Log.d(TAG, "Set AllDownService Alarm starting at "
+					+ Constants.TWEETFORMAT.format(cal.getTime()));
 
 			ed.putBoolean("reset_set", true);
 			ed.commit();
 
-			Log.d(TAG, "Set ResetService Alarm starting at "
-					+ Constants.TWEETFORMAT.format(cal.getTime()));
 		}
 
 		SharedPreferences settings = PreferenceManager

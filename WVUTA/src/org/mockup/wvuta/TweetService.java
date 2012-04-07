@@ -103,7 +103,6 @@ public class TweetService extends Service {
 			SimpleDateFormat df = new SimpleDateFormat("(MMM. dd @ hh:mmaa)");
 			if (prt_matcher.find()) {
 				String prt_tweet = prt_matcher.group().toUpperCase();
-				Log.d(TAG, "PRT Tweet: " + prt_tweet);
 				int bus_index = -1;
 				String prt_no_bus = prt_tweet;
 				// remove bus portion if exists

@@ -35,7 +35,7 @@ public class ReportService extends Service {
 
 	private ReportLookupTask task = null;
 	public static final String REPORTS = "org.mockup.wvuta.REPORTS";
-	private static final String TAG = "WVUTA::RetrievingService";
+	private static final String TAG = "WVUTA::ReportService";
 	private final ArrayList<String> reportArray = new ArrayList<String>();
 	private ArrayList<String> times = new ArrayList<String>();
 	private boolean error = false;
@@ -47,7 +47,7 @@ public class ReportService extends Service {
 
 	@Override
 	public void onCreate() {
-		Log.d(TAG, "RetrievingService onCreate");
+		Log.d(TAG, "ReportService onCreate");
 		getDBInfo();
 		super.onCreate();
 	}
@@ -232,9 +232,6 @@ public class ReportService extends Service {
 					"location", null)));
 			al.add(new BasicNameValuePair("status", prefs.getString("status",
 					null)));
-			Log.d(TAG,
-					prefs.getString("location", "x") + " "
-							+ prefs.getString("status", "y"));
 
 			// connect
 			try {

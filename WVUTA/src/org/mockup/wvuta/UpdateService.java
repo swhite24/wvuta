@@ -41,6 +41,8 @@ public class UpdateService extends Service {
 	@Override
 	public void onDestroy() {
 		Log.d(TAG, "UpdateService onDestroy");
+		this.unregisterReceiver(reportReceiver);
+		this.unregisterReceiver(tweetReceiver);
 	}
 
 

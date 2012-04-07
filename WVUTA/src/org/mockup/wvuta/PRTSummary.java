@@ -53,6 +53,7 @@ public class PRTSummary extends Activity {
 
 	@Override
 	protected void onPause() {
+		Log.d(TAG, "PRTSummary onPause");
 		unregisterReceiver(report_receiver);
 		unregisterReceiver(tweet_receiver);
 		super.onPause();
