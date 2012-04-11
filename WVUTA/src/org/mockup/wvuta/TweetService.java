@@ -12,10 +12,10 @@ import java.util.regex.Pattern;
 
 import winterwell.jtwitter.Twitter;
 import android.app.Service;
-import android.content.Context;
+import android.content.ContentValues;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.util.Log;
@@ -27,6 +27,8 @@ public class TweetService extends Service {
 	private TweetLookupTask tweetTask;
 	public static ArrayList<Report> all_tweets;
 	private ArrayList<String> times = new ArrayList<String>();
+	private DBHelper dbhelper;
+	private boolean updated = false;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -36,6 +38,7 @@ public class TweetService extends Service {
 	@Override
 	public void onCreate() {
 		Log.d(TAG, "TweetService onCreate");
+		dbhelper = new DBHelper(getApplicationContext());
 		super.onCreate();
 	}
 
@@ -47,8 +50,8 @@ public class TweetService extends Service {
 	}
 
 	/**
-	 * Checks times to see if tweets were found, if so check if preferences
-	 * were updated.  Then, broadcast results.
+	 * Checks times to see if tweets were found, if so check if preferences were
+	 * updated. Then, broadcast results.
 	 */
 	private void announce_results() {
 		Log.d(TAG, "Broadcasting tweets");
@@ -56,6 +59,7 @@ public class TweetService extends Service {
 			update_latest();
 		}
 		Intent i = new Intent(TWEETS);
+		i.putExtra("updated", updated);
 		sendBroadcast(i);
 		stopSelf();
 	}
@@ -129,14 +133,14 @@ public class TweetService extends Service {
 						eng = "Up";
 						tow = "Up";
 						med = "Up";
-					// all stations down
+						// all stations down
 					} else if (all_down_matcher.find()) {
 						beech = "Down";
 						walnut = "Down";
 						eng = "Down";
 						tow = "Down";
 						med = "Down";
-					// some station(s) down
+						// some station(s) down
 					} else if (down_matcher.find()) {
 						Matcher beech_matcher = beech_pattern
 								.matcher(down_matcher.group());
@@ -198,8 +202,14 @@ public class TweetService extends Service {
 
 	}
 
+	/**
+	 * Updates DB with new tweets.
+	 */
 	private void update_latest() {
 		Log.d(TAG, "Updating prefs with tweets");
+
+		SQLiteDatabase db = dbhelper.getWritableDatabase();
+
 		String beech_status = null;
 		String eng_status = null;
 		String med_status = null;
@@ -212,8 +222,8 @@ public class TweetService extends Service {
 
 		Iterator<Report> report_it = all_tweets.iterator();
 		Iterator<String> time_it = times.iterator();
-		SharedPreferences prefs = getSharedPreferences(Constants.LATEST,
-				Context.MODE_PRIVATE);
+		
+		// pull latest report for each location
 		while (report_it.hasNext() && time_it.hasNext()) {
 			Report current = report_it.next();
 			String status = current.getStatus();
@@ -247,6 +257,7 @@ public class TweetService extends Service {
 			}
 		}
 
+		// parse dates for each location
 		Date b_date = null, e_date = null, m_date = null, t_date = null, w_date = null;
 		try {
 			b_date = b_time == null ? null : Constants.TWEETFORMAT
@@ -264,56 +275,91 @@ public class TweetService extends Service {
 			return;
 		}
 
+		// parse dates from latest reports in DB
 		Date beech = null, eng = null, tow = null, med = null, wal = null;
 		try {
-			beech = Constants.TWEETFORMAT.parse(prefs.getString("btime", null));
-			eng = Constants.TWEETFORMAT.parse(prefs.getString("etime", null));
-			med = Constants.TWEETFORMAT.parse(prefs.getString("mtime", null));
-			tow = Constants.TWEETFORMAT.parse(prefs.getString("ttime", null));
-			wal = Constants.TWEETFORMAT.parse(prefs.getString("wtime", null));
+			String[] cols = { Constants.LOCATION_COL, Constants.TIME_COL };
+			String orderBy = Constants.LOCATION_COL + " ASC";
+			Cursor times = db.query(Constants.TABLENAME, cols, null, null,
+					null, null, orderBy);
+
+			times.moveToNext();
+			beech = Constants.TWEETFORMAT.parse(times.getString(1));
+
+			times.moveToNext();
+			eng = Constants.TWEETFORMAT.parse(times.getString(1));
+
+			times.moveToNext();
+			med = Constants.TWEETFORMAT.parse(times.getString(1));
+
+			times.moveToNext();
+			tow = Constants.TWEETFORMAT.parse(times.getString(1));
+
+			times.moveToNext();
+			wal = Constants.TWEETFORMAT.parse(times.getString(1));
 		} catch (Exception e) {
 			Log.d(TAG, "Couldn't parse old dates: " + e.getMessage());
 			return;
 		}
 
-		Editor ed = prefs.edit();
+		// Check if new tweets are newer, if so update DB
+		ContentValues values = new ContentValues();
 		if (b_date != null && beech != null && b_date.after(beech)) {
 			if (beech_status != null) {
-				ed.putString(Constants.BEECHURST, beech_status);
-				ed.putString("bsource", b_source);
-				ed.putString("btime", b_time);
+				updated = true;
+				values.put(Constants.LOCATION_COL, "BEECHURST");
+				values.put(Constants.STATUS_COL, beech_status);
+				values.put(Constants.SOURCE_COL, b_source);
+				values.put(Constants.TIME_COL, b_time);
+				db.replace(Constants.TABLENAME, null, values);
 			}
 		}
+		values = new ContentValues();
 		if (e_date != null && eng != null && e_date.after(eng)) {
 			if (eng_status != null) {
-				ed.putString(Constants.ENGINEERING, eng_status);
-				ed.putString("esource", e_source);
-				ed.putString("etime", e_time);
+				updated = true;
+				values.put(Constants.LOCATION_COL, "ENGINEERING");
+				values.put(Constants.STATUS_COL, eng_status);
+				values.put(Constants.SOURCE_COL, e_source);
+				values.put(Constants.TIME_COL, e_time);
+				db.replace(Constants.TABLENAME, null, values);
 			}
 		}
+		values = new ContentValues();
 		if (m_date != null && med != null && m_date.after(med)) {
 			if (med_status != null) {
-				ed.putString(Constants.MEDICAL, med_status);
-				ed.putString("msource", m_source);
-				ed.putString("mtime", m_time);
+				updated = true;
+				values.put(Constants.LOCATION_COL, "MEDICAL");
+				values.put(Constants.STATUS_COL, med_status);
+				values.put(Constants.SOURCE_COL, m_source);
+				values.put(Constants.TIME_COL, m_time);
+				db.replace(Constants.TABLENAME, null, values);
 			}
 		}
+		values = new ContentValues();
 		if (t_date != null && tow != null && t_date.after(tow)) {
 			if (tow_status != null) {
-				ed.putString(Constants.TOWERS, tow_status);
-				ed.putString("tsource", t_source);
-				ed.putString("ttime", t_time);
+				updated = true;
+				values.put(Constants.LOCATION_COL, "TOWERS");
+				values.put(Constants.STATUS_COL, tow_status);
+				values.put(Constants.SOURCE_COL, t_source);
+				values.put(Constants.TIME_COL, t_time);
+				db.replace(Constants.TABLENAME, null, values);
 			}
 		}
+		values = new ContentValues();
 		if (w_date != null && wal != null && w_date.after(wal)) {
 			if (wal_status != null) {
-				ed.putString(Constants.WALNUT, wal_status);
-				ed.putString("wsource", w_source);
-				ed.putString("wtime", w_time);
+				updated = true;
+				values.put(Constants.LOCATION_COL, "WALNUT");
+				values.put(Constants.STATUS_COL, wal_status);
+				values.put(Constants.SOURCE_COL, w_source);
+				values.put(Constants.TIME_COL, w_time);
+				db.replace(Constants.TABLENAME, null, values);
 			}
 		}
-		Log.d(TAG, "updated prefs with tweets");
-		ed.commit();
+		Log.d(TAG, "updated DB with tweets");
+		db.close();
 	}
 
 	/**

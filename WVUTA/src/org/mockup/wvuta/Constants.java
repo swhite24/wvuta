@@ -19,6 +19,13 @@ public interface Constants extends BaseColumns {
 	public static final String TOWERS = "Towers";
 	public static final String MEDICAL = "Medical";
 
+	public static final String DB_NAME = "CURRENT_STATUS_DB";
+	public static final String REPORT_TABLE = "REPORTS";
+	public static final String LOCATION_COL = "LOCATION";
+	public static final String STATUS_COL = "STATUS";
+	public static final String SOURCE_COL = "SOURCE";
+	public static final String TIME_COL = "REPORT_TIME";
+
 	public static final String CURRENT_STATUS_TAG = "CurrentStatus";
 
 	public static final String TIME = "Time";

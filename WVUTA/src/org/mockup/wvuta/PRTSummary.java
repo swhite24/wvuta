@@ -7,7 +7,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,12 +26,15 @@ public class PRTSummary extends Activity {
 	private ReportReceiver report_receiver;
 	private TweetReceiver tweet_receiver;
 	private ProgressDialog p_dialog;
+	private DBHelper dbhelper;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.prtsummary);
 		Log.d(TAG, "PRTSummary onCreate");
+
+		dbhelper = new DBHelper(getApplicationContext());
 
 		beech = (TextView) findViewById(R.id.prtsummary_beech_status);
 		eng = (TextView) findViewById(R.id.prtsummary_eng_status);
@@ -68,6 +72,7 @@ public class PRTSummary extends Activity {
 		registerReceiver(report_receiver, filter);
 		registerReceiver(tweet_receiver, filter1);
 		populate_fields();
+		dbhelper.close();
 		super.onResume();
 	}
 
@@ -88,21 +93,44 @@ public class PRTSummary extends Activity {
 	 * accordingly.
 	 */
 	private void populate_fields() {
-		SharedPreferences prefs = getSharedPreferences(Constants.LATEST,
-				Context.MODE_PRIVATE);
+		String beech_text = null;
+		String eng_text = null;
+		String med_text = null;
+		String tow_text = null;
+		String wal_text = null;
 
-		String beech_text = prefs.getString(Constants.BEECHURST, null);
-		String eng_text = prefs.getString(Constants.ENGINEERING, null);
-		String med_text = prefs.getString(Constants.MEDICAL, null);
-		String tow_text = prefs.getString(Constants.TOWERS, null);
-		String wal_text = prefs.getString(Constants.WALNUT, null);
+		String b_source = null;
+		String e_source = null;
+		String m_source = null;
+		String t_source = null;
+		String w_source = null;
 
-		String b_source = prefs.getString("bsource", null);
-		String e_source = prefs.getString("esource", null);
-		String m_source = prefs.getString("msource", null);
-		String t_source = prefs.getString("tsource", null);
-		String w_source = prefs.getString("wsource", null);
+		// get latest reports from db
+		SQLiteDatabase db = dbhelper.getReadableDatabase();
+		String[] cols = { Constants.LOCATION_COL, Constants.STATUS_COL,
+				Constants.TIME_COL, Constants.SOURCE_COL };
+		String orderBy = Constants.LOCATION_COL + " ASC";
 
+		Cursor cursor = db.query(Constants.TABLENAME, cols, null, null, null,
+				null, orderBy);
+
+		cursor.moveToNext();
+		beech_text = cursor.getString(1);
+		b_source = cursor.getString(3);
+		cursor.moveToNext();
+		eng_text = cursor.getString(1);
+		e_source = cursor.getString(3);
+		cursor.moveToNext();
+		med_text = cursor.getString(1);
+		m_source = cursor.getString(3);
+		cursor.moveToNext();
+		tow_text = cursor.getString(1);
+		t_source = cursor.getString(3);
+		cursor.moveToNext();
+		wal_text = cursor.getString(1);
+		w_source = cursor.getString(3);
+
+		// update each station
 		if (beech_text != null) {
 			if (beech_text.equalsIgnoreCase("up")) {
 				beech.setTextColor(Color.GREEN);
@@ -188,6 +216,7 @@ public class PRTSummary extends Activity {
 				wal.setText(wal_text);
 			}
 		}
+		db.close();
 	}
 
 	/**

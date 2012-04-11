@@ -4,11 +4,15 @@ import java.util.Calendar;
 
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -22,6 +26,7 @@ import android.widget.Button;
 public class Main extends Activity implements OnClickListener {
 	private static final String TAG = "WVUTA::MAIN";
 	private AlarmManager am;
+	private DBHelper dbhelper;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -39,13 +44,15 @@ public class Main extends Activity implements OnClickListener {
 		busButton.setOnClickListener(this);
 
 		check_maps();
-		setup_alarms();
 	}
 
 	@Override
 	protected void onResume() {
 		Log.d(TAG, "Main onResume");
+		NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		nm.cancel(UpdateService.NOTIF_ID);
 		setup_alarms();
+
 		super.onResume();
 	}
 
@@ -89,25 +96,27 @@ public class Main extends Activity implements OnClickListener {
 
 			am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 			Calendar cal = Calendar.getInstance();
-			cal.set(Calendar.HOUR, 1);
-			cal.set(Calendar.MINUTE, 0);
-			cal.set(Calendar.AM_PM, Calendar.AM);
+			cal.set(Calendar.HOUR, 10);
+			cal.set(Calendar.MINUTE, 15);
+			cal.set(Calendar.AM_PM, Calendar.PM);
 			cal.set(Calendar.DATE, cal.get(Calendar.DATE) + 1);
 
 			PendingIntent pintent = PendingIntent.getService(this, 0,
-					new Intent(this, AllUpService.class), 0);
-			am.setRepeating(AlarmManager.RTC, cal.getTimeInMillis(),
-					AlarmManager.INTERVAL_DAY, pintent);
-			Log.d(TAG, "Set AllUpService Alarm starting at "
-					+ Constants.TWEETFORMAT.format(cal.getTime()));
-
-			pintent = PendingIntent.getService(this, 0, new Intent(this,
-					AllDownService.class), 0);
-
-			cal.set(Calendar.HOUR, 6);
+					new Intent(this, AllDownService.class), 0);
 			am.setRepeating(AlarmManager.RTC, cal.getTimeInMillis(),
 					AlarmManager.INTERVAL_DAY, pintent);
 			Log.d(TAG, "Set AllDownService Alarm starting at "
+					+ Constants.TWEETFORMAT.format(cal.getTime()));
+
+			pintent = PendingIntent.getService(this, 0, new Intent(this,
+					AllUpService.class), 0);
+
+			cal.set(Calendar.HOUR, 6);
+			cal.set(Calendar.MINUTE, 30);
+			cal.set(Calendar.AM_PM, Calendar.AM);
+			am.setRepeating(AlarmManager.RTC, cal.getTimeInMillis(),
+					AlarmManager.INTERVAL_DAY, pintent);
+			Log.d(TAG, "Set AllUpService Alarm starting at "
 					+ Constants.TWEETFORMAT.format(cal.getTime()));
 
 			ed.putBoolean("reset_set", true);
@@ -121,20 +130,19 @@ public class Main extends Activity implements OnClickListener {
 				this, UpdateService.class), 0);
 		AlarmManager am2 = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 		// setup notification update alarm
-		if (settings.getBoolean("NOTIFICATION_PREF", false)
-				|| !settings.contains("NOTIFICATION_PREF")) {
+		if (settings.getBoolean("UPDATE_PREF", false)
+				|| !settings.contains("UPDATE_PREF")) {
 			int current = Integer.parseInt(settings.getString(
 					"NOTIFICATION_FREQ", "3600")) * 1000;
 			int last = prefs.getInt("update_freq", -1);
 			if (current != last) {
+				// get calendar instance and add frequency offset
 				Calendar cal = Calendar.getInstance();
-				Log.d(TAG, "cal: " + cal.getTimeInMillis());
 				cal.setTimeInMillis(cal.getTimeInMillis() + current);
 
-				Log.d(TAG, "cal: " + cal.getTimeInMillis());
-				Log.d(TAG, "current: " + current);
 				try {
-					am2.setRepeating(AlarmManager.RTC, cal.getTimeInMillis(),
+					// set alarm to update
+					am2.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),
 							current, pintent);
 				} catch (Exception e) {
 					Log.d(TAG, "Error: " + e.getMessage());
@@ -160,31 +168,55 @@ public class Main extends Activity implements OnClickListener {
 	 */
 	private void check_maps() {
 		Log.d(TAG, "Initializing prefs");
-		SharedPreferences prefs = getSharedPreferences(Constants.LATEST,
-				Context.MODE_PRIVATE);
-		if (!prefs.contains(Constants.BEECHURST)
-				|| prefs.getString(Constants.BEECHURST, null) == null) {
-			Editor ed = prefs.edit();
-			ed.putString(Constants.BEECHURST, "Up");
-			ed.putString(Constants.ENGINEERING, "Up");
-			ed.putString(Constants.MEDICAL, "Up");
-			ed.putString(Constants.TOWERS, "Up");
-			ed.putString(Constants.WALNUT, "Up");
-			ed.putString("bsource", "user");
-			ed.putString("esource", "user");
-			ed.putString("msource", "user");
-			ed.putString("tsource", "user");
-			ed.putString("wsource", "user");
-			Calendar cal = Calendar.getInstance();
-			cal.set(Calendar.MONTH, Calendar.JANUARY);
-			ed.putString("btime", Constants.TWEETFORMAT.format(cal.getTime()));
-			ed.putString("etime", Constants.TWEETFORMAT.format(cal.getTime()));
-			ed.putString("mtime", Constants.TWEETFORMAT.format(cal.getTime()));
-			ed.putString("ttime", Constants.TWEETFORMAT.format(cal.getTime()));
-			ed.putString("wtime", Constants.TWEETFORMAT.format(cal.getTime()));
 
-			ed.commit();
+		dbhelper = new DBHelper(getApplicationContext());
+		SQLiteDatabase db = dbhelper.getWritableDatabase();
+		String[] cols = { Constants.LOCATION_COL };
+		Cursor cursor = db.query(Constants.TABLENAME, cols, null, null, null,
+				null, null);
+		if (!cursor.moveToFirst()) {
+			Log.d(TAG, "Initializing DB");
+			Calendar cal = Calendar.getInstance();
+			cal.set(Calendar.DAY_OF_YEAR, cal.get(Calendar.DAY_OF_YEAR) - 1);
+			String time = Constants.TWEETFORMAT.format(cal.getTime());
+
+			ContentValues values = new ContentValues();
+			values.put(Constants.LOCATION_COL, "BEECHURST");
+			values.put(Constants.STATUS_COL, "Up");
+			values.put(Constants.SOURCE_COL, "WVUDOT");
+			values.put(Constants.TIME_COL, time);
+			db.insert(Constants.TABLENAME, null, values);
+
+			values = new ContentValues();
+			values.put(Constants.LOCATION_COL, "ENGINEERING");
+			values.put(Constants.STATUS_COL, "Up");
+			values.put(Constants.SOURCE_COL, "WVUDOT");
+			values.put(Constants.TIME_COL, time);
+			db.insert(Constants.TABLENAME, null, values);
+
+			values = new ContentValues();
+			values.put(Constants.LOCATION_COL, "MEDICAL");
+			values.put(Constants.STATUS_COL, "Up");
+			values.put(Constants.SOURCE_COL, "WVUDOT");
+			values.put(Constants.TIME_COL, time);
+			db.insert(Constants.TABLENAME, null, values);
+
+			values = new ContentValues();
+			values.put(Constants.LOCATION_COL, "TOWERS");
+			values.put(Constants.STATUS_COL, "Up");
+			values.put(Constants.SOURCE_COL, "WVUDOT");
+			values.put(Constants.TIME_COL, time);
+			db.insert(Constants.TABLENAME, null, values);
+
+			values = new ContentValues();
+			values.put(Constants.LOCATION_COL, "WALNUT");
+			values.put(Constants.STATUS_COL, "Up");
+			values.put(Constants.SOURCE_COL, "WVUDOT");
+			values.put(Constants.TIME_COL, time);
+			db.insert(Constants.TABLENAME, null, values);
 		}
+		db.close();
+		dbhelper.close();
 	}
 
 	public void onClick(View v) {

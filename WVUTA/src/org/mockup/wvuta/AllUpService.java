@@ -3,10 +3,9 @@ package org.mockup.wvuta;
 import java.util.Calendar;
 
 import android.app.Service;
-import android.content.Context;
+import android.content.ContentValues;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -22,35 +21,51 @@ public class AllUpService extends Service{
 	public void onCreate() {
 		Log.d(TAG, "AllUpService onCreate");
 		
-		SharedPreferences prefs = getSharedPreferences(Constants.LATEST,
-				Context.MODE_PRIVATE);
-		
-		Editor ed = prefs.edit();
-		
-		ed.putString(Constants.BEECHURST, "Up");
-		ed.putString(Constants.ENGINEERING, "Up");
-		ed.putString(Constants.MEDICAL, "Up");
-		ed.putString(Constants.TOWERS, "Up");
-		ed.putString(Constants.WALNUT, "Up");
-		
-		ed.putString("bsource", "WVUDOT");
-		ed.putString("esource", "WVUDOT");
-		ed.putString("msource", "WVUDOT");
-		ed.putString("tsource", "WVUDOT");
-		ed.putString("wsource", "WVUDOT");
+		DBHelper dbhelper = new DBHelper(getApplicationContext());
+		SQLiteDatabase db = dbhelper.getWritableDatabase();
 		
 		Calendar cal = Calendar.getInstance();
 		String time = Constants.TWEETFORMAT.format(cal.getTime());
 		
-		ed.putString("btime", time);
-		ed.putString("etime", time);
-		ed.putString("mtime", time);
-		ed.putString("ttime", time);
-		ed.putString("wtime", time);
+		ContentValues values = new ContentValues();
+		values.put(Constants.LOCATION_COL, "BEECHURST");
+		values.put(Constants.STATUS_COL, "Up");
+		values.put(Constants.TIME_COL, time);
+		values.put(Constants.SOURCE_COL, "WVUDOT");		
+		db.replace(Constants.TABLENAME, null, values);
 		
-		ed.commit();
+		values = new ContentValues();
+		values.put(Constants.LOCATION_COL, "ENGINEERING");
+		values.put(Constants.STATUS_COL, "Up");
+		values.put(Constants.TIME_COL, time);
+		values.put(Constants.SOURCE_COL, "WVUDOT");		
+		db.replace(Constants.TABLENAME, null, values);
+
+		values = new ContentValues();
+		values.put(Constants.LOCATION_COL, "MEDICAL");
+		values.put(Constants.STATUS_COL, "Up");
+		values.put(Constants.TIME_COL, time);
+		values.put(Constants.SOURCE_COL, "WVUDOT");		
+		db.replace(Constants.TABLENAME, null, values);
+
+		values = new ContentValues();
+		values.put(Constants.LOCATION_COL, "TOWERS");
+		values.put(Constants.STATUS_COL, "Up");
+		values.put(Constants.TIME_COL, time);
+		values.put(Constants.SOURCE_COL, "WVUDOT");		
+		db.replace(Constants.TABLENAME, null, values);
+
+		values = new ContentValues();
+		values.put(Constants.LOCATION_COL, "WALNUT");
+		values.put(Constants.STATUS_COL, "Up");
+		values.put(Constants.TIME_COL, time);
+		values.put(Constants.SOURCE_COL, "WVUDOT");		
+		db.replace(Constants.TABLENAME, null, values);
 		
 		Log.d(TAG, "Finished reset.");
+		
+		db.close();
+		dbhelper.close();
 		
 		stopSelf();
 	}

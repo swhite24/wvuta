@@ -41,6 +41,9 @@ public class PRTReports extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.prtreports);
+		
+		Log.d(TAG, "PRTReports onCreate");
+		
 		// initialize preferences & editor
 		// also remove previous filters
 		prefs = getSharedPreferences(Constants.TABLENAME, Context.MODE_PRIVATE);

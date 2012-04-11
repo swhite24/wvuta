@@ -23,10 +23,12 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Service;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.util.Log;
@@ -35,10 +37,11 @@ public class ReportService extends Service {
 
 	private ReportLookupTask task = null;
 	public static final String REPORTS = "org.mockup.wvuta.REPORTS";
-	private static final String TAG = "WVUTA::ReportService";
+	private static final String TAG = "WVUTA::REPORTSERVICE";
 	private final ArrayList<String> reportArray = new ArrayList<String>();
 	private ArrayList<String> times = new ArrayList<String>();
 	private boolean error = false;
+	private DBHelper dbhelper;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -48,6 +51,7 @@ public class ReportService extends Service {
 	@Override
 	public void onCreate() {
 		Log.d(TAG, "ReportService onCreate");
+		dbhelper = new DBHelper(getApplicationContext());
 		getDBInfo();
 		super.onCreate();
 	}
@@ -83,15 +87,19 @@ public class ReportService extends Service {
 		if (!times.isEmpty()) {
 			updateLatest();
 		}
+		dump_db();
+		dbhelper.close();
 		sendBroadcast(intent);
 		stopSelf();
 	}
 
 	/**
-	 * Updates preferences with latest status and source for each station.
+	 * Updates DB with latest status and source for each station.
 	 */
 	private void updateLatest() {
 		if (!error) {
+			SQLiteDatabase db = dbhelper.getWritableDatabase();
+
 			String beech_status = null;
 			String eng_status = null;
 			String med_status = null;
@@ -104,8 +112,8 @@ public class ReportService extends Service {
 
 			Iterator<String> report_it = reportArray.iterator();
 			Iterator<String> time_it = times.iterator();
-			SharedPreferences prefs = getSharedPreferences(Constants.LATEST,
-					Context.MODE_PRIVATE);
+			// Retrieve information for each report of the current day and pull
+			// latest for each station.
 			while (report_it.hasNext()) {
 				String status = report_it.next();
 				report_it.next();
@@ -154,64 +162,116 @@ public class ReportService extends Service {
 				w_date = w_time == null ? null : Constants.TWEETFORMAT
 						.parse(w_time);
 			} catch (ParseException e) {
-				Log.d(TAG, "Couldn't parse dates. top");
+				Log.e(TAG, "Couldn't parse dates. top");
 			}
 
 			Date beech = null, eng = null, tow = null, med = null, wal = null;
 			try {
-				beech = Constants.TWEETFORMAT.parse(prefs.getString("btime",
-						null));
-				eng = Constants.TWEETFORMAT.parse(prefs
-						.getString("etime", null));
-				med = Constants.TWEETFORMAT.parse(prefs
-						.getString("mtime", null));
-				tow = Constants.TWEETFORMAT.parse(prefs
-						.getString("ttime", null));
-				wal = Constants.TWEETFORMAT.parse(prefs
-						.getString("wtime", null));
+				String[] cols = { Constants.LOCATION_COL, Constants.TIME_COL };
+				String orderBy = Constants.LOCATION_COL + " ASC";
+				Cursor times = db.query(Constants.TABLENAME, cols, null, null,
+						null, null, orderBy);
+				
+				
+				times.moveToNext();
+				beech = Constants.TWEETFORMAT.parse(times.getString(1));				
+
+				times.moveToNext();
+				eng = Constants.TWEETFORMAT.parse(times.getString(1));
+
+				times.moveToNext();
+				med = Constants.TWEETFORMAT.parse(times.getString(1));
+
+				times.moveToNext();
+				tow = Constants.TWEETFORMAT.parse(times.getString(1));
+
+				times.moveToNext();
+				wal = Constants.TWEETFORMAT.parse(times.getString(1));
 			} catch (Exception e) {
-				Log.d(TAG, "Couldn't parse dates. bottom");
+				Log.e(TAG, "Couldn't parse dates. bottom");
 			}
 
-			Editor ed = prefs.edit();
+			ContentValues values = new ContentValues();
 			if (b_date != null && beech != null && b_date.after(beech)) {
 				if (beech_status != null) {
-					ed.putString(Constants.BEECHURST, beech_status);
-					ed.putString("bsource", b_source);
-					ed.putString("btime", b_time);
+					values.put(Constants.LOCATION_COL, "BEECHURST");
+					values.put(Constants.STATUS_COL, beech_status);
+					values.put(Constants.SOURCE_COL, b_source);
+					values.put(Constants.TIME_COL, b_time);
+					db.replace(Constants.TABLENAME, null, values);
+					Log.d(TAG, "Updated BEECHURST");
 				}
 			}
+			values = new ContentValues();
 			if (e_date != null && eng != null && e_date.after(eng)) {
 				if (eng_status != null) {
-					ed.putString(Constants.ENGINEERING, eng_status);
-					ed.putString("esource", e_source);
-					ed.putString("etime", e_time);
+					values.put(Constants.LOCATION_COL, "ENGINEERING");
+					values.put(Constants.STATUS_COL, eng_status);
+					values.put(Constants.SOURCE_COL, e_source);
+					values.put(Constants.TIME_COL, e_time);
+					db.replace(Constants.TABLENAME, null, values);
+					Log.d(TAG, "Updated ENGINEERING");
 				}
 			}
+			values = new ContentValues();
 			if (m_date != null && med != null && m_date.after(med)) {
 				if (med_status != null) {
-					ed.putString(Constants.MEDICAL, med_status);
-					ed.putString("msource", m_source);
-					ed.putString("mtime", m_time);
+					values.put(Constants.LOCATION_COL, "MEDICAL");
+					values.put(Constants.STATUS_COL, med_status);
+					values.put(Constants.SOURCE_COL, m_source);
+					values.put(Constants.TIME_COL, m_time);
+					db.replace(Constants.TABLENAME, null, values);
+					Log.d(TAG, "Updated MEDICAL");
 				}
 			}
+			values = new ContentValues();
 			if (t_date != null && tow != null && t_date.after(tow)) {
 				if (tow_status != null) {
-					ed.putString(Constants.TOWERS, tow_status);
-					ed.putString("tsource", t_source);
-					ed.putString("ttime", t_time);
+					values.put(Constants.LOCATION_COL, "TOWERS");
+					values.put(Constants.STATUS_COL, tow_status);
+					values.put(Constants.SOURCE_COL, t_source);
+					values.put(Constants.TIME_COL, t_time);
+					db.replace(Constants.TABLENAME, null, values);
+					Log.d(TAG, "Updated TOWERS");
 				}
 			}
+			values = new ContentValues();
 			if (w_date != null && wal != null && w_date.after(wal)) {
 				if (wal_status != null) {
-					ed.putString(Constants.WALNUT, wal_status);
-					ed.putString("wsource", w_source);
-					ed.putString("wtime", w_time);
+					values.put(Constants.LOCATION_COL, "WALNUT");
+					values.put(Constants.STATUS_COL, wal_status);
+					values.put(Constants.SOURCE_COL, w_source);
+					values.put(Constants.TIME_COL, w_time);
+					db.replace(Constants.TABLENAME, null, values);
+					Log.d(TAG, "Updated WALNUT");
 				}
 			}
-			Log.d(TAG, "added prefs - reports");
-			ed.commit();
+			Log.d(TAG, "updated DB with reports");
+			db.close();
 		}
+	}
+
+	/**
+	 * Show current contents of DB
+	 */
+	private void dump_db() {
+		Log.d(TAG, "Dumping db");
+		SQLiteDatabase db = dbhelper.getReadableDatabase();
+		String[] FROM = { Constants.LOCATION_COL, Constants.STATUS_COL,
+				Constants.TIME_COL, Constants.SOURCE_COL };
+		String orderBy = Constants.LOCATION_COL + " ASC";
+		Cursor cursor = db.query(Constants.TABLENAME, FROM, null, null, null,
+				null, orderBy);
+
+		while (cursor.moveToNext()) {
+			String location = cursor.getString(0);
+			String status = cursor.getString(1);
+			String time = cursor.getString(2);
+			String source = cursor.getString(3);
+			Log.d(TAG, "ROW: " + location + ", " + status + ", " + time + ", "
+					+ source);
+		}
+		db.close();
 	}
 
 	private class ReportLookupTask extends AsyncTask<Void, Void, String> {
