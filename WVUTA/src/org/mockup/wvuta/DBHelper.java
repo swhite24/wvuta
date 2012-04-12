@@ -19,7 +19,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		Log.d(TAG, "DBHelper onCreate");
 		// create table
-		String create_table = "CREATE TABLE " + Constants.REPORT_TABLE + " ("
+		String create_table = "CREATE TABLE " + Constants.TABLE_NAME + " ("
 				+ Constants.LOCATION_COL + " TEXT PRIMARY KEY, "
 				+ Constants.STATUS_COL + " TEXT NOT NULL, "
 				+ Constants.SOURCE_COL + " TEXT NOT NULL, "
@@ -33,7 +33,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		Log.d(TAG, "DBHelper onUpgrade");
 		// drop old table then re-create new version
-		db.execSQL("DROP TABLE IF EXISTS " + Constants.REPORT_TABLE);
+		db.execSQL("DROP TABLE IF EXISTS " + Constants.TABLE_NAME);
 		onCreate(db);
 	}
 

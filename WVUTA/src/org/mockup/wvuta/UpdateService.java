@@ -25,19 +25,23 @@ public class UpdateService extends Service {
 
 	@Override
 	public void onCreate() {
+		super.onCreate();
 		Log.d(TAG, "UpdateService onCreate");
 
-		IntentFilter filter = new IntentFilter(ReportService.REPORTS);
+		// Register receiver for ReportService
 		reportReceiver = new ReportReceiver();
+		IntentFilter filter = new IntentFilter(ReportService.REPORTS);
 		registerReceiver(reportReceiver, filter);
 
+		// Register receiver for TweetService
+		tweetReceiver = new TweetReceiver();
 		IntentFilter filter1 = new IntentFilter(TweetService.TWEETS);
 		registerReceiver(tweetReceiver, filter1);
 
+		// Start ReportService
 		Log.d(TAG, "Starting ReportService");
 		Intent intent = new Intent(this, ReportService.class);
 		startService(intent);
-		super.onCreate();
 	}
 
 	@Override
@@ -50,7 +54,8 @@ public class UpdateService extends Service {
 	private class ReportReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			Log.d(TAG, "Starting TweetService");
+			// Start TweetService
+			Log.d(TAG, "Received report broadcast, starting TweetService");
 			Intent i = new Intent(UpdateService.this, TweetService.class);
 			startService(i);
 		}
@@ -59,24 +64,23 @@ public class UpdateService extends Service {
 	private class TweetReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			Log.d(TAG, "Shutting Down");
-			// Post notification if new update
-			// if (intent.getBooleanExtra("updated", false)) {
-			Notification newTweet = new Notification(R.drawable.ya,
-					"New PRT Update", System.currentTimeMillis());
+			Log.d(TAG, "Received tweet broadcast");
+			// Post notification if new update found
+			if (intent.getBooleanExtra("updated", false)) {
+				Notification newTweet = new Notification(R.drawable.ya,
+						"New PRT Update", System.currentTimeMillis());
 
-			Intent start = new Intent(getApplicationContext(), Main.class);
-			PendingIntent pending = PendingIntent.getActivity(
-					getApplicationContext(), 0, start, 0);
+				Intent start = new Intent(getApplicationContext(), Main.class);
+				PendingIntent pending = PendingIntent.getActivity(
+						getApplicationContext(), 0, start, 0);
 
-			newTweet.setLatestEventInfo(UpdateService.this, "New PRT Update",
-					"Touch to check status", pending);
-			newTweet.defaults |= Notification.DEFAULT_VIBRATE;
-			NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-			nm.notify(NOTIF_ID, newTweet);
-			// }
-			UpdateService.this.unregisterReceiver(reportReceiver);
-			UpdateService.this.unregisterReceiver(tweetReceiver);
+				newTweet.setLatestEventInfo(UpdateService.this,
+						"New PRT Update", "Touch to check status", pending);
+				newTweet.defaults |= Notification.DEFAULT_VIBRATE;
+				NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+				nm.notify(NOTIF_ID, newTweet);
+			}
+			// Stop UpdateService
 			stopSelf();
 		}
 	}

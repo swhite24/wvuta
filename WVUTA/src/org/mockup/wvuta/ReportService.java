@@ -169,7 +169,7 @@ public class ReportService extends Service {
 			try {
 				String[] cols = { Constants.LOCATION_COL, Constants.TIME_COL };
 				String orderBy = Constants.LOCATION_COL + " ASC";
-				Cursor times = db.query(Constants.TABLENAME, cols, null, null,
+				Cursor times = db.query(Constants.TABLE_NAME, cols, null, null,
 						null, null, orderBy);
 				
 				
@@ -198,7 +198,7 @@ public class ReportService extends Service {
 					values.put(Constants.STATUS_COL, beech_status);
 					values.put(Constants.SOURCE_COL, b_source);
 					values.put(Constants.TIME_COL, b_time);
-					db.replace(Constants.TABLENAME, null, values);
+					db.replace(Constants.TABLE_NAME, null, values);
 					Log.d(TAG, "Updated BEECHURST");
 				}
 			}
@@ -209,7 +209,7 @@ public class ReportService extends Service {
 					values.put(Constants.STATUS_COL, eng_status);
 					values.put(Constants.SOURCE_COL, e_source);
 					values.put(Constants.TIME_COL, e_time);
-					db.replace(Constants.TABLENAME, null, values);
+					db.replace(Constants.TABLE_NAME, null, values);
 					Log.d(TAG, "Updated ENGINEERING");
 				}
 			}
@@ -220,7 +220,7 @@ public class ReportService extends Service {
 					values.put(Constants.STATUS_COL, med_status);
 					values.put(Constants.SOURCE_COL, m_source);
 					values.put(Constants.TIME_COL, m_time);
-					db.replace(Constants.TABLENAME, null, values);
+					db.replace(Constants.TABLE_NAME, null, values);
 					Log.d(TAG, "Updated MEDICAL");
 				}
 			}
@@ -231,7 +231,7 @@ public class ReportService extends Service {
 					values.put(Constants.STATUS_COL, tow_status);
 					values.put(Constants.SOURCE_COL, t_source);
 					values.put(Constants.TIME_COL, t_time);
-					db.replace(Constants.TABLENAME, null, values);
+					db.replace(Constants.TABLE_NAME, null, values);
 					Log.d(TAG, "Updated TOWERS");
 				}
 			}
@@ -242,7 +242,7 @@ public class ReportService extends Service {
 					values.put(Constants.STATUS_COL, wal_status);
 					values.put(Constants.SOURCE_COL, w_source);
 					values.put(Constants.TIME_COL, w_time);
-					db.replace(Constants.TABLENAME, null, values);
+					db.replace(Constants.TABLE_NAME, null, values);
 					Log.d(TAG, "Updated WALNUT");
 				}
 			}
@@ -260,7 +260,7 @@ public class ReportService extends Service {
 		String[] FROM = { Constants.LOCATION_COL, Constants.STATUS_COL,
 				Constants.TIME_COL, Constants.SOURCE_COL };
 		String orderBy = Constants.LOCATION_COL + " ASC";
-		Cursor cursor = db.query(Constants.TABLENAME, FROM, null, null, null,
+		Cursor cursor = db.query(Constants.TABLE_NAME, FROM, null, null, null,
 				null, orderBy);
 
 		while (cursor.moveToNext()) {
@@ -283,7 +283,7 @@ public class ReportService extends Service {
 			StringBuilder output = new StringBuilder();
 			String result = "";
 
-			SharedPreferences prefs = getSharedPreferences(Constants.TABLENAME,
+			SharedPreferences prefs = getSharedPreferences(Constants.TABLE_NAME,
 					Context.MODE_PRIVATE);
 
 			// put filters, null or not, into ArrayList to send to server

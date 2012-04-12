@@ -46,7 +46,7 @@ public class PRTReports extends Activity {
 		
 		// initialize preferences & editor
 		// also remove previous filters
-		prefs = getSharedPreferences(Constants.TABLENAME, Context.MODE_PRIVATE);
+		prefs = getSharedPreferences(Constants.TABLE_NAME, Context.MODE_PRIVATE);
 		editor = prefs.edit();
 		editor.remove("location");
 		editor.remove("status");

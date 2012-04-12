@@ -40,7 +40,7 @@ public class PRTReportStatus extends Activity implements OnClickListener {
 		Log.d(TAG, "PRTReportStatus onCreate");
 		
 		// initialize preferences
-		reportTracker = getSharedPreferences(Constants.TABLENAME,
+		reportTracker = getSharedPreferences(Constants.TABLE_NAME,
 				Context.MODE_PRIVATE);
 
 		// set clicklisteners for all views in layout

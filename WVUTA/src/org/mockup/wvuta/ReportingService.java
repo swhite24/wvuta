@@ -70,7 +70,7 @@ public class ReportingService extends Service {
 		protected Void doInBackground(Void... params) {
 			InputStream inStream = null;
 			StringBuilder builder = new StringBuilder();
-			SharedPreferences prefs = getSharedPreferences(Constants.TABLENAME,
+			SharedPreferences prefs = getSharedPreferences(Constants.TABLE_NAME,
 					Context.MODE_PRIVATE);
 
 			// add relevant values to ArrayList which will be sent to database

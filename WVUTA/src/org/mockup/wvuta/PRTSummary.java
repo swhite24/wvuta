@@ -111,9 +111,10 @@ public class PRTSummary extends Activity {
 				Constants.TIME_COL, Constants.SOURCE_COL };
 		String orderBy = Constants.LOCATION_COL + " ASC";
 
-		Cursor cursor = db.query(Constants.TABLENAME, cols, null, null, null,
+		Cursor cursor = db.query(Constants.TABLE_NAME, cols, null, null, null,
 				null, orderBy);
 
+		// Get status and source for latest report of each station
 		cursor.moveToNext();
 		beech_text = cursor.getString(1);
 		b_source = cursor.getString(3);

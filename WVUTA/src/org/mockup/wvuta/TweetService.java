@@ -280,7 +280,7 @@ public class TweetService extends Service {
 		try {
 			String[] cols = { Constants.LOCATION_COL, Constants.TIME_COL };
 			String orderBy = Constants.LOCATION_COL + " ASC";
-			Cursor times = db.query(Constants.TABLENAME, cols, null, null,
+			Cursor times = db.query(Constants.TABLE_NAME, cols, null, null,
 					null, null, orderBy);
 
 			times.moveToNext();
@@ -311,7 +311,7 @@ public class TweetService extends Service {
 				values.put(Constants.STATUS_COL, beech_status);
 				values.put(Constants.SOURCE_COL, b_source);
 				values.put(Constants.TIME_COL, b_time);
-				db.replace(Constants.TABLENAME, null, values);
+				db.replace(Constants.TABLE_NAME, null, values);
 			}
 		}
 		values = new ContentValues();
@@ -322,7 +322,7 @@ public class TweetService extends Service {
 				values.put(Constants.STATUS_COL, eng_status);
 				values.put(Constants.SOURCE_COL, e_source);
 				values.put(Constants.TIME_COL, e_time);
-				db.replace(Constants.TABLENAME, null, values);
+				db.replace(Constants.TABLE_NAME, null, values);
 			}
 		}
 		values = new ContentValues();
@@ -333,7 +333,7 @@ public class TweetService extends Service {
 				values.put(Constants.STATUS_COL, med_status);
 				values.put(Constants.SOURCE_COL, m_source);
 				values.put(Constants.TIME_COL, m_time);
-				db.replace(Constants.TABLENAME, null, values);
+				db.replace(Constants.TABLE_NAME, null, values);
 			}
 		}
 		values = new ContentValues();
@@ -344,7 +344,7 @@ public class TweetService extends Service {
 				values.put(Constants.STATUS_COL, tow_status);
 				values.put(Constants.SOURCE_COL, t_source);
 				values.put(Constants.TIME_COL, t_time);
-				db.replace(Constants.TABLENAME, null, values);
+				db.replace(Constants.TABLE_NAME, null, values);
 			}
 		}
 		values = new ContentValues();
@@ -355,7 +355,7 @@ public class TweetService extends Service {
 				values.put(Constants.STATUS_COL, wal_status);
 				values.put(Constants.SOURCE_COL, w_source);
 				values.put(Constants.TIME_COL, w_time);
-				db.replace(Constants.TABLENAME, null, values);
+				db.replace(Constants.TABLE_NAME, null, values);
 			}
 		}
 		Log.d(TAG, "updated DB with tweets");

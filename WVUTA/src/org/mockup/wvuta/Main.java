@@ -43,7 +43,8 @@ public class Main extends Activity implements OnClickListener {
 		Button busButton = (Button) findViewById(R.id.mainBusButton);
 		busButton.setOnClickListener(this);
 
-		check_maps();
+		// Check if DB needs initialized
+		check_DB();
 	}
 
 	@Override
@@ -166,13 +167,11 @@ public class Main extends Activity implements OnClickListener {
 	 * Checks to see if current station information is present in preferences.
 	 * If not, adds default info.
 	 */
-	private void check_maps() {
-		Log.d(TAG, "Initializing prefs");
-
+	private void check_DB() {
 		dbhelper = new DBHelper(getApplicationContext());
 		SQLiteDatabase db = dbhelper.getWritableDatabase();
 		String[] cols = { Constants.LOCATION_COL };
-		Cursor cursor = db.query(Constants.TABLENAME, cols, null, null, null,
+		Cursor cursor = db.query(Constants.TABLE_NAME, cols, null, null, null,
 				null, null);
 		if (!cursor.moveToFirst()) {
 			Log.d(TAG, "Initializing DB");
@@ -185,35 +184,35 @@ public class Main extends Activity implements OnClickListener {
 			values.put(Constants.STATUS_COL, "Up");
 			values.put(Constants.SOURCE_COL, "WVUDOT");
 			values.put(Constants.TIME_COL, time);
-			db.insert(Constants.TABLENAME, null, values);
+			db.insert(Constants.TABLE_NAME, null, values);
 
 			values = new ContentValues();
 			values.put(Constants.LOCATION_COL, "ENGINEERING");
 			values.put(Constants.STATUS_COL, "Up");
 			values.put(Constants.SOURCE_COL, "WVUDOT");
 			values.put(Constants.TIME_COL, time);
-			db.insert(Constants.TABLENAME, null, values);
+			db.insert(Constants.TABLE_NAME, null, values);
 
 			values = new ContentValues();
 			values.put(Constants.LOCATION_COL, "MEDICAL");
 			values.put(Constants.STATUS_COL, "Up");
 			values.put(Constants.SOURCE_COL, "WVUDOT");
 			values.put(Constants.TIME_COL, time);
-			db.insert(Constants.TABLENAME, null, values);
+			db.insert(Constants.TABLE_NAME, null, values);
 
 			values = new ContentValues();
 			values.put(Constants.LOCATION_COL, "TOWERS");
 			values.put(Constants.STATUS_COL, "Up");
 			values.put(Constants.SOURCE_COL, "WVUDOT");
 			values.put(Constants.TIME_COL, time);
-			db.insert(Constants.TABLENAME, null, values);
+			db.insert(Constants.TABLE_NAME, null, values);
 
 			values = new ContentValues();
 			values.put(Constants.LOCATION_COL, "WALNUT");
 			values.put(Constants.STATUS_COL, "Up");
 			values.put(Constants.SOURCE_COL, "WVUDOT");
 			values.put(Constants.TIME_COL, time);
-			db.insert(Constants.TABLENAME, null, values);
+			db.insert(Constants.TABLE_NAME, null, values);
 		}
 		db.close();
 		dbhelper.close();

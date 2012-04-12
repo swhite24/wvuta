@@ -32,35 +32,35 @@ public class AllUpService extends Service{
 		values.put(Constants.STATUS_COL, "Up");
 		values.put(Constants.TIME_COL, time);
 		values.put(Constants.SOURCE_COL, "WVUDOT");		
-		db.replace(Constants.TABLENAME, null, values);
+		db.replace(Constants.TABLE_NAME, null, values);
 		
 		values = new ContentValues();
 		values.put(Constants.LOCATION_COL, "ENGINEERING");
 		values.put(Constants.STATUS_COL, "Up");
 		values.put(Constants.TIME_COL, time);
 		values.put(Constants.SOURCE_COL, "WVUDOT");		
-		db.replace(Constants.TABLENAME, null, values);
+		db.replace(Constants.TABLE_NAME, null, values);
 
 		values = new ContentValues();
 		values.put(Constants.LOCATION_COL, "MEDICAL");
 		values.put(Constants.STATUS_COL, "Up");
 		values.put(Constants.TIME_COL, time);
 		values.put(Constants.SOURCE_COL, "WVUDOT");		
-		db.replace(Constants.TABLENAME, null, values);
+		db.replace(Constants.TABLE_NAME, null, values);
 
 		values = new ContentValues();
 		values.put(Constants.LOCATION_COL, "TOWERS");
 		values.put(Constants.STATUS_COL, "Up");
 		values.put(Constants.TIME_COL, time);
 		values.put(Constants.SOURCE_COL, "WVUDOT");		
-		db.replace(Constants.TABLENAME, null, values);
+		db.replace(Constants.TABLE_NAME, null, values);
 
 		values = new ContentValues();
 		values.put(Constants.LOCATION_COL, "WALNUT");
 		values.put(Constants.STATUS_COL, "Up");
 		values.put(Constants.TIME_COL, time);
 		values.put(Constants.SOURCE_COL, "WVUDOT");		
-		db.replace(Constants.TABLENAME, null, values);
+		db.replace(Constants.TABLE_NAME, null, values);
 		
 		Log.d(TAG, "Finished reset.");
 		
