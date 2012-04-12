@@ -8,4 +8,8 @@
     <style name="all_activities">
         <item name="android:background">@color/Background</item>
     </style>
+    <style name="summ_text">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:padding">5dp</item>
+    </style>
 </resources>

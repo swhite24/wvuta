@@ -10,7 +10,7 @@
 
         <ListPreference
             android:defaultValue="3600"
-            android:dependency="NOTIFICATION_PREF"
+            android:dependency="UPDATE_PREF"
             android:dialogTitle="Update Frequency"
             android:entries="@array/update_freq_titles"
             android:entryValues="@array/update_freq_vals"

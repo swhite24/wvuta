@@ -8,7 +8,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class UpdateService extends Service {
@@ -65,8 +67,11 @@ public class UpdateService extends Service {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			Log.d(TAG, "Received tweet broadcast");
-			// Post notification if new update found
-			if (intent.getBooleanExtra("updated", false)) {
+			SharedPreferences prefs = PreferenceManager
+					.getDefaultSharedPreferences(getApplicationContext());
+			// Post notification if new update found && user desires
+			if (intent.getBooleanExtra("updated", false)
+					&& prefs.getBoolean("NOTIFICATION_PREF", false)) {
 				Notification newTweet = new Notification(R.drawable.ya,
 						"New PRT Update", System.currentTimeMillis());
 

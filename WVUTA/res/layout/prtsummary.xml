@@ -3,81 +3,65 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical">
-
     <TableLayout
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center"
         android:layout_gravity="top"
+        android:background="@color/navy"
         android:stretchColumns="1" >
-
         <TableRow>
-
             <TextView
                 android:layout_column="1"
-                android:padding="5dp"
+                style="@style/summ_text"
                 android:text="BEECHURST" />
-
             <TextView
                 android:id="@+id/prtsummary_beech_status"
                 android:gravity="right"
                 android:padding="5dp" />
         </TableRow>
-
         <TableRow>
-
             <TextView
                 android:layout_column="1"
-                android:padding="5dp"
+                style="@style/summ_text"
                 android:text="ENGINEERING" />
-
             <TextView
                 android:id="@+id/prtsummary_eng_status"
                 android:gravity="right"
                 android:padding="5dp" />
         </TableRow>
-
         <TableRow>
-
             <TextView
                 android:layout_column="1"
-                android:padding="5dp"
+                style="@style/summ_text"
                 android:text="MEDICAL" />
-
             <TextView
                 android:id="@+id/prtsummary_med_status"
                 android:gravity="right"
                 android:padding="5dp" />
         </TableRow>
-
         <TableRow>
-
             <TextView
                 android:layout_column="1"
-                android:padding="5dp"
+                style="@style/summ_text"
                 android:text="TOWERS" />
-
             <TextView
                 android:id="@+id/prtsummary_tow_status"
                 android:gravity="right"
                 android:padding="5dp" />
         </TableRow>
-
         <TableRow>
-
             <TextView
                 android:layout_column="1"
-                android:padding="5dp"
+                style="@style/summ_text"
                 android:text="WALNUT" />
-
             <TextView
                 android:id="@+id/prtsummary_wal_status"
                 android:gravity="right"
                 android:padding="5dp" />
         </TableRow>
-    </TableLayout>
-    
+    </TableLayout>    
     <Button 
         android:id="@+id/prtsummary_rfrsh_btn"
         android:text="Refresh"

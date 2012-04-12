@@ -3,5 +3,6 @@
 <resources>
 	<color name="Background">#FFD700</color>
 	<color name="blueText">#0000EE</color>
+	<color name="navy">#000080</color>
 	<color name="black">#000000</color>
 </resources>
