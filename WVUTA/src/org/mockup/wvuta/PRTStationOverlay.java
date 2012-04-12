@@ -5,7 +5,8 @@ import java.util.Iterator;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
@@ -86,15 +87,29 @@ public class PRTStationOverlay extends ItemizedOverlay<OverlayItem> {
 		AlertDialog.Builder dialog = new AlertDialog.Builder(context);
 		dialog.setTitle(getName(index));
 
-		SharedPreferences prefs = context.getSharedPreferences(
-				Constants.LATEST, Context.MODE_PRIVATE);
+		DBHelper dbhelper = new DBHelper(context.getApplicationContext());
+		SQLiteDatabase db = dbhelper.getReadableDatabase();
 
+		String[] cols = { Constants.LOCATION_COL, Constants.STATUS_COL,
+				Constants.SOURCE_COL };
+		String where = Constants.LOCATION_COL + " = ?";
+		String[] where_args = {getName(index).toUpperCase()};
+
+		Cursor cursor = db.query(Constants.TABLE_NAME, cols, where, where_args, null,
+				null, null);
+		
+		cursor.moveToNext();		
+		
 		StringBuilder sb = new StringBuilder();
-		sb.append("Status: " + prefs.getString(getName(index), null) + "\n");
-		sb.append("Source: User\n");
+		sb.append("Status: " + cursor.getString(1) + "\n");
+		sb.append("Source: " + cursor.getString(2));
 		dialog.setMessage(sb.toString());
 		dialog.setPositiveButton("Done", null);
+		
+		db.close();
+		dbhelper.close();
 		dialog.show();
+		
 		return true;
 	}
 

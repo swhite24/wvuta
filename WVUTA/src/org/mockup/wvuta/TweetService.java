@@ -105,6 +105,7 @@ public class TweetService extends Service {
 			time = null;
 			Matcher prt_matcher = prt_pattern.matcher(tweets.get(i).toString());
 			SimpleDateFormat df = new SimpleDateFormat("(MMM. dd @ hh:mmaa)");
+			// prt tweets
 			if (prt_matcher.find()) {
 				String prt_tweet = prt_matcher.group().toUpperCase();
 				int bus_index = -1;
@@ -124,6 +125,7 @@ public class TweetService extends Service {
 						Log.d(TAG, "Invalid tweet time format.");
 					}
 				}
+				// all tweets from current day
 				if (time != null && cal.get(Calendar.DATE) == time.getDate()
 						&& cal.get(Calendar.MONTH) == time.getMonth()) {
 					// all stations up
