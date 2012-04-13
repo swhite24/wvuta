@@ -81,7 +81,8 @@ public class UpdateService extends Service {
 
 				newTweet.setLatestEventInfo(UpdateService.this,
 						"New PRT Update", "Touch to check status", pending);
-				newTweet.defaults |= Notification.DEFAULT_VIBRATE;
+				if (prefs.getBoolean("NOTIFICATION_VIB", false))
+					newTweet.defaults |= Notification.DEFAULT_VIBRATE;
 				NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 				nm.notify(NOTIF_ID, newTweet);
 			}

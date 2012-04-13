@@ -85,7 +85,7 @@ public class PRTStationOverlay extends ItemizedOverlay<OverlayItem> {
 	public boolean onTap(int index) {
 		Log.d("Overlay", "recieved tap on index: " + index);
 		AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-		dialog.setTitle(getName(index));
+		dialog.setTitle(getName(index) + " Station");
 
 		DBHelper dbhelper = new DBHelper(context.getApplicationContext());
 		SQLiteDatabase db = dbhelper.getReadableDatabase();

@@ -24,6 +24,12 @@
             android:key="NOTIFICATION_PREF"
             android:summary="@string/notificationSummary"
             android:title="@string/notificationTitle" />
+        <CheckBoxPreference 
+            android:defaultValue="true"
+            android:dependency="NOTIFICATION_PREF"
+            android:key="NOTIFICATION_VIB"
+            android:summary="Vibrate when notification is received"
+            android:title="Vibrate"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

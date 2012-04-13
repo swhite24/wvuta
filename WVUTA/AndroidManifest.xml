@@ -84,6 +84,9 @@
             android:name=".AllUpService"
             android:enabled="true" />
         <service
+            android:name=".AllDownService"
+            android:enabled="true" />
+        <service
             android:name=".UpdateService"
             android:enabled="true" />
     </application>

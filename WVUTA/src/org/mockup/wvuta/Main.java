@@ -100,7 +100,7 @@ public class Main extends Activity implements OnClickListener {
 			cal.set(Calendar.HOUR, 10);
 			cal.set(Calendar.MINUTE, 15);
 			cal.set(Calendar.AM_PM, Calendar.PM);
-			cal.set(Calendar.DATE, cal.get(Calendar.DATE) + 1);
+			cal.set(Calendar.DATE, cal.get(Calendar.DATE));
 
 			PendingIntent pintent = PendingIntent.getService(this, 0,
 					new Intent(this, AllDownService.class), 0);
@@ -109,14 +109,14 @@ public class Main extends Activity implements OnClickListener {
 			Log.d(TAG, "Set AllDownService Alarm starting at "
 					+ Constants.TWEETFORMAT.format(cal.getTime()));
 
-			pintent = PendingIntent.getService(this, 0, new Intent(this,
-					AllUpService.class), 0);
+			PendingIntent pintent1 = PendingIntent.getService(this, 0,
+					new Intent(this, AllUpService.class), 0);
 
 			cal.set(Calendar.HOUR, 6);
 			cal.set(Calendar.MINUTE, 30);
 			cal.set(Calendar.AM_PM, Calendar.AM);
 			am.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),
-					AlarmManager.INTERVAL_DAY, pintent);
+					AlarmManager.INTERVAL_DAY, pintent1);
 			Log.d(TAG, "Set AllUpService Alarm starting at "
 					+ Constants.TWEETFORMAT.format(cal.getTime()));
 
