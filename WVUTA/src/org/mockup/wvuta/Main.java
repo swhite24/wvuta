@@ -173,6 +173,7 @@ public class Main extends Activity implements OnClickListener {
 		String[] cols = { Constants.LOCATION_COL };
 		Cursor cursor = db.query(Constants.TABLE_NAME, cols, null, null, null,
 				null, null);
+		// check if DB has already been initialized
 		if (!cursor.moveToFirst()) {
 			Log.d(TAG, "Initializing DB");
 			Calendar cal = Calendar.getInstance();
