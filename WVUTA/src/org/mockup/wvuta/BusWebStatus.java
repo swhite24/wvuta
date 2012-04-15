@@ -10,7 +10,8 @@ import android.widget.Button;
 
 public class BusWebStatus extends Activity implements OnClickListener{
 	private static final String TAG = "WVUTA::BUSWEBSTATUS";
-	private String busStatusUrl = "http://www.busride.org/MyBus/BusFrame.html";
+	private String busStatusUrl = "http://site.busride.org/mybus/mybus.gif";
+	private String busmap = "http://site.busride.org/mybus/mybus.gif";
 	private WebView webview;
 	private int xOffset = 0;
 	private int yOffset = 0;
@@ -34,6 +35,8 @@ public class BusWebStatus extends Activity implements OnClickListener{
 	private void openBrowser() {
 		webview.getSettings().setJavaScriptEnabled(true);
 		webview.getSettings().setBuiltInZoomControls(true);
+		webview.getSettings().setLoadsImagesAutomatically(true);
+		webview.setClickable(true);
 		webview.loadUrl(busStatusUrl);
 		//webview.scrollTo(xOffset, yOffset);
 	}
