@@ -74,8 +74,6 @@ public class Main extends Activity implements OnClickListener {
 		case R.id.menuAbout:
 			startActivity(new Intent(this, About.class));
 			break;
-		case R.id.menuHelp:
-			break;
 		}
 		return true;
 	}
@@ -100,7 +98,6 @@ public class Main extends Activity implements OnClickListener {
 			cal.set(Calendar.HOUR, 10);
 			cal.set(Calendar.MINUTE, 15);
 			cal.set(Calendar.AM_PM, Calendar.PM);
-			cal.set(Calendar.DATE, cal.get(Calendar.DATE));
 
 			PendingIntent pintent = PendingIntent.getService(this, 0,
 					new Intent(this, AllDownService.class), 0);
@@ -115,6 +112,7 @@ public class Main extends Activity implements OnClickListener {
 			cal.set(Calendar.HOUR, 6);
 			cal.set(Calendar.MINUTE, 30);
 			cal.set(Calendar.AM_PM, Calendar.AM);
+			cal.set(Calendar.DATE, cal.get(Calendar.DATE) + 1);
 			am.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),
 					AlarmManager.INTERVAL_DAY, pintent1);
 			Log.d(TAG, "Set AllUpService Alarm starting at "
@@ -173,44 +171,52 @@ public class Main extends Activity implements OnClickListener {
 		String[] cols = { Constants.LOCATION_COL };
 		Cursor cursor = db.query(Constants.TABLE_NAME, cols, null, null, null,
 				null, null);
+		Calendar cal = Calendar.getInstance();
+		String status = null;
+		if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY
+				|| cal.get(Calendar.HOUR_OF_DAY) >= 22
+				|| cal.get(Calendar.HOUR_OF_DAY) <= 6) {
+			status = "Down";
+		} else {
+			status = "Up";
+		}
 		// check if DB has already been initialized
 		if (!cursor.moveToFirst()) {
 			Log.d(TAG, "Initializing DB");
-			Calendar cal = Calendar.getInstance();
 			cal.set(Calendar.DAY_OF_YEAR, cal.get(Calendar.DAY_OF_YEAR) - 1);
 			String time = Constants.TWEETFORMAT.format(cal.getTime());
-
+			
 			ContentValues values = new ContentValues();
 			values.put(Constants.LOCATION_COL, "BEECHURST");
-			values.put(Constants.STATUS_COL, "Up");
+			values.put(Constants.STATUS_COL, status);
 			values.put(Constants.SOURCE_COL, "WVUDOT");
 			values.put(Constants.TIME_COL, time);
 			db.insert(Constants.TABLE_NAME, null, values);
 
 			values = new ContentValues();
 			values.put(Constants.LOCATION_COL, "ENGINEERING");
-			values.put(Constants.STATUS_COL, "Up");
+			values.put(Constants.STATUS_COL, status);
 			values.put(Constants.SOURCE_COL, "WVUDOT");
 			values.put(Constants.TIME_COL, time);
 			db.insert(Constants.TABLE_NAME, null, values);
 
 			values = new ContentValues();
 			values.put(Constants.LOCATION_COL, "MEDICAL");
-			values.put(Constants.STATUS_COL, "Up");
+			values.put(Constants.STATUS_COL, status);
 			values.put(Constants.SOURCE_COL, "WVUDOT");
 			values.put(Constants.TIME_COL, time);
 			db.insert(Constants.TABLE_NAME, null, values);
 
 			values = new ContentValues();
 			values.put(Constants.LOCATION_COL, "TOWERS");
-			values.put(Constants.STATUS_COL, "Up");
+			values.put(Constants.STATUS_COL, status);
 			values.put(Constants.SOURCE_COL, "WVUDOT");
 			values.put(Constants.TIME_COL, time);
 			db.insert(Constants.TABLE_NAME, null, values);
 
 			values = new ContentValues();
 			values.put(Constants.LOCATION_COL, "WALNUT");
-			values.put(Constants.STATUS_COL, "Up");
+			values.put(Constants.STATUS_COL, status);
 			values.put(Constants.SOURCE_COL, "WVUDOT");
 			values.put(Constants.TIME_COL, time);
 			db.insert(Constants.TABLE_NAME, null, values);
@@ -230,7 +236,7 @@ public class Main extends Activity implements OnClickListener {
 			startActivity(j);
 			break;
 		case R.id.mainBusButton:
-			Intent k = new Intent(this, BusWebStatus.class);
+			Intent k = new Intent(this, BusTab.class);
 			startActivity(k);
 			break;
 

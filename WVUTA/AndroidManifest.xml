@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.mockup.wvuta"
     android:versionCode="1"
-    android:versionName="1.5.1" >
+    android:versionName="1.0.0" >
 
     <uses-sdk android:minSdkVersion="7" />
 
@@ -71,10 +71,6 @@
             android:label="PRT"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".BusWebStatus"
-            android:label="@string/busWebTitle"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".PRTReportStatus"
             android:label="@string/prtReportStatus"
             android:screenOrientation="portrait" />
@@ -91,6 +87,9 @@
             android:enabled="true" />
         <service
             android:name=".TweetService"
+            android:enabled="true" />
+        <service
+            android:name=".BusTweetService"
             android:enabled="true" />
         <service
             android:name=".AllUpService"

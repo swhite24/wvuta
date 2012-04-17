@@ -11,9 +11,4 @@
   		android:title="@string/aboutLabel"
   		android:alphabeticShortcut="a">
   	</item>
-  	<item
-  		android:id="@+id/menuHelp"
-  		android:title="@string/helpLabel"
-  		android:alphabeticShortcut="h">
-  	</item>
 </menu>

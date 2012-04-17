@@ -1,5 +1,7 @@
 package org.mockup.wvuta;
 
+import java.util.Calendar;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -38,7 +40,7 @@ public class PRTReportStatus extends Activity implements OnClickListener {
 		setContentView(R.layout.prtreportstatus);
 
 		Log.d(TAG, "PRTReportStatus onCreate");
-		
+
 		// initialize preferences
 		reportTracker = getSharedPreferences(Constants.TABLE_NAME,
 				Context.MODE_PRIVATE);
@@ -118,10 +120,18 @@ public class PRTReportStatus extends Activity implements OnClickListener {
 				long currentTime = System.currentTimeMillis();
 				long deltaTime = currentTime
 						- (reportTracker.getLong(Constants.TIME, 0));
+				Calendar time = Calendar.getInstance();
 				// for use with limiting reports per hour
-				if (deltaTime < 5000) {
+				if (deltaTime < 300000) {
 					Toast toast = Toast.makeText(this,
 							R.string.submissionLimitExceededText,
+							Toast.LENGTH_SHORT);
+					toast.setGravity(Gravity.CENTER, 0, 0);
+					toast.show();
+				} else if (time.get(Calendar.HOUR_OF_DAY) > 21
+						|| time.get(Calendar.HOUR_OF_DAY) < 6
+						|| time.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+					Toast toast = Toast.makeText(this, "PRT current closed",
 							Toast.LENGTH_SHORT);
 					toast.setGravity(Gravity.CENTER, 0, 0);
 					toast.show();

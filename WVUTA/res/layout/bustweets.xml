@@ -4,9 +4,10 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
     
-    <TextView 
+    <ListView 
+        android:id="@+id/bus_tweet_list"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="temptweets"/>
+        android:layout_height="fill_parent">        
+    </ListView>
 
 </LinearLayout>
