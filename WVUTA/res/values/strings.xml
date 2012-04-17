@@ -6,8 +6,8 @@
     <string name="aboutTitle">About WVU Transportation App</string>
     <string name="aboutText">\
 Developed as a part of Lane Department of Computer Science and Electrical Engineering
-senior design course by Steven White, Shane Welsh, and Peter Kirkpatrick.  Graphics/images
-provided by Ray Zane.\n\n
+senior design course by Steven White, Shane Welsh, and Peter Kirkpatrick.  Graphics, images, 
+and initial app idea provided by Ray Zane.\n\n
 This is a small application design to help students plan their commute between campuses.  
 The goal of this app is to give students a way to view the status of the PRT and the bus 
 system while they are in route to/from their classes.  This app also features the ability 
