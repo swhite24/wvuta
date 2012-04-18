@@ -2,12 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@color/Background"
+    android:padding="5dp" >
     
     <ListView 
         android:id="@+id/bus_tweet_list"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">        
+        android:layout_height="wrap_content"
+        android:scrollbarStyle="outsideInset">        
     </ListView>
 
 </LinearLayout>

@@ -1,6 +1,8 @@
 package org.mockup.wvuta;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import winterwell.jtwitter.Twitter;
@@ -14,7 +16,7 @@ public class BusTweetService extends Service {
 
 	private static final String TAG = "WVUTA::BUSTWEETSERVICE";
 	public static final String BUSTWEETS = "org.mockup.wvuta.BUSTWEETSERVICE";
-	public static ArrayList<String> tweets;
+	public static ArrayList<BusTweet> tweets;
 	private BusTweetTask btask;
 
 	@Override
@@ -47,18 +49,20 @@ public class BusTweetService extends Service {
 
 		@Override
 		protected Void doInBackground(Void... params) {
-			tweets = new ArrayList<String>();
+			tweets = new ArrayList<BusTweet>();
 			Twitter mtwitter = new Twitter();
 			try {
 				List<winterwell.jtwitter.Status> mTweets = mtwitter
 						.getUserTimeline("MLticker");
 				for (int i = 0; i < mTweets.size(); i++){
-					Log.d(TAG, "tweet " + i + ": " + mTweets.get(i).toString());
-					tweets.add(mTweets.get(i).toString());
+					SimpleDateFormat display_time = new SimpleDateFormat("hh:mm aa");
+					Date date = mTweets.get(i).getCreatedAt();
+					tweets.add(new BusTweet(mTweets.get(i).toString(),
+							display_time.format(date)));
 				}
 			} catch (Exception e) {
 				Log.e(TAG, "Error retrieving bus tweets.");
-				tweets.add("No MLticker tweets available");
+				tweets.add(new BusTweet("No MLticker tweets available", null));
 			}
 			announceResults();
 			return null;

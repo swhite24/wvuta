@@ -30,17 +30,17 @@ public final class R {
         public static final int aboutContent=0x7f0a0000;
         public static final int bus_tweet_list=0x7f0a0002;
         public static final int busmap_webview=0x7f0a0001;
-        public static final int currentStatusMenuBeechurst=0x7f0a001d;
-        public static final int currentStatusMenuDefault=0x7f0a0025;
-        public static final int currentStatusMenuDown=0x7f0a0024;
-        public static final int currentStatusMenuEngineering=0x7f0a001e;
-        public static final int currentStatusMenuFBL=0x7f0a001c;
-        public static final int currentStatusMenuFBS=0x7f0a0022;
-        public static final int currentStatusMenuMedical=0x7f0a001f;
-        public static final int currentStatusMenuRefresh=0x7f0a001b;
-        public static final int currentStatusMenuTowers=0x7f0a0020;
-        public static final int currentStatusMenuUp=0x7f0a0023;
-        public static final int currentStatusMenuWalnut=0x7f0a0021;
+        public static final int currentStatusMenuBeechurst=0x7f0a001f;
+        public static final int currentStatusMenuDefault=0x7f0a0027;
+        public static final int currentStatusMenuDown=0x7f0a0026;
+        public static final int currentStatusMenuEngineering=0x7f0a0020;
+        public static final int currentStatusMenuFBL=0x7f0a001e;
+        public static final int currentStatusMenuFBS=0x7f0a0024;
+        public static final int currentStatusMenuMedical=0x7f0a0021;
+        public static final int currentStatusMenuRefresh=0x7f0a001d;
+        public static final int currentStatusMenuTowers=0x7f0a0022;
+        public static final int currentStatusMenuUp=0x7f0a0025;
+        public static final int currentStatusMenuWalnut=0x7f0a0023;
         public static final int dateCol=0x7f0a0016;
         public static final int downRB=0x7f0a000b;
         public static final int locCol=0x7f0a0017;
@@ -48,8 +48,8 @@ public final class R {
         public static final int mainBusButton=0x7f0a0005;
         public static final int mainPRTReportButton=0x7f0a0004;
         public static final int mainPRTViewStatusButton=0x7f0a0003;
-        public static final int menuAbout=0x7f0a001a;
-        public static final int menuSettings=0x7f0a0019;
+        public static final int menuAbout=0x7f0a001c;
+        public static final int menuSettings=0x7f0a001b;
         public static final int prtSubmitButton=0x7f0a000d;
         public static final int prt_map=0x7f0a0007;
         public static final int prtmap_ll=0x7f0a0006;
@@ -63,6 +63,8 @@ public final class R {
         public static final int runningRB=0x7f0a000c;
         public static final int statCol=0x7f0a0018;
         public static final int tweetList=0x7f0a0015;
+        public static final int tweetrow_time=0x7f0a001a;
+        public static final int tweetrow_tweet=0x7f0a0019;
         public static final int upDownGroup=0x7f0a000a;
     }
     public static final class layout {
@@ -79,6 +81,7 @@ public final class R {
         public static final int prttab=0x7f03000a;
         public static final int prttweets=0x7f03000b;
         public static final int rowcustom=0x7f03000c;
+        public static final int tweet_row=0x7f03000d;
     }
     public static final class menu {
         public static final int menu=0x7f090000;
