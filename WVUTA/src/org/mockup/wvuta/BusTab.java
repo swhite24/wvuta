@@ -21,6 +21,7 @@ public class BusTab extends TabActivity {
 		TabHost.TabSpec spec;
 		Intent intent;
 
+		// add each tab
 		intent = new Intent().setClass(this, BusTweets.class);
 		spec = tab_host.newTabSpec("Tweets").setIndicator("Tweets")
 				.setContent(intent);
