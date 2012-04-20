@@ -131,7 +131,7 @@ public class PRTReportStatus extends Activity implements OnClickListener {
 				} else if (time.get(Calendar.HOUR_OF_DAY) > 21
 						|| time.get(Calendar.HOUR_OF_DAY) < 6
 						|| time.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-					Toast toast = Toast.makeText(this, "PRT current closed",
+					Toast toast = Toast.makeText(this, "PRT currently closed",
 							Toast.LENGTH_SHORT);
 					toast.setGravity(Gravity.CENTER, 0, 0);
 					toast.show();

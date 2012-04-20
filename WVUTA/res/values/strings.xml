@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">WVU Transportation App</string>
+    <string name="app_name">WVU Student Transportation</string>
     <string name="busStart">View Bus Status</string>
     <string name="aboutLabel">About</string>
     <string name="aboutTitle">About WVU Transportation App</string>
@@ -12,7 +12,9 @@ This is a small application design to help students plan their commute between c
 The goal of this app is to give students a way to view the status of the PRT and the bus 
 system while they are in route to/from their classes.  This app also features the ability 
 to report the status of the PRT.  This is for when the PRT is down, but WVU has yet 
-stated it is down.\n\nThis application uses the JTwitter library found at: http://www.winterwell.com/software/jtwitter.php.</string>
+stated it is down.\n\nThis application uses the JTwitter library found at: 
+http://www.winterwell.com/software/jtwitter.php.\n\n
+The Flying WV logo and institutional mark is property of West Virginia University.</string>
 	<string name="prtMainTitle">PRT Section</string>
 	<string name="prtReportStatus">Report PRT Status</string>
 	<string name="submitButton">Submit</string>
