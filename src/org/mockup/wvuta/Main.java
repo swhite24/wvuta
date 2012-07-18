@@ -1,8 +1,10 @@
 package org.mockup.wvuta;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 
 public class Main extends Activity {
 
@@ -18,4 +20,14 @@ public class Main extends Activity {
 		return true;
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_settings:
+			startActivity(new Intent(this, Settings.class));
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
 }

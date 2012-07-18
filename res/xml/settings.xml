@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="Updates" >
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="automatic_updates"
+            android:summary="Automatically update status of PRT"
+            android:title="Automatic Updates" />
+
+        <ListPreference
+            android:defaultValue="3600"
+            android:dependency="automatic_updates"
+            android:dialogTitle="Update Frequency"
+            android:entries="@array/update_freq_titles"
+            android:entryValues="@array/update_freq_vals"
+            android:key="notification_freq"
+            android:summary="Choose how often to check for status updates"
+            android:title="Update Frequency" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Notifications" >
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="receive_notifications"
+            android:summary="Receive notification of PRT status change"
+            android:title="Receive Notifications" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="receive_notifications"
+            android:key="vibrate_notifications"
+            android:summary="Vibrate when notification is received"
+            android:title="Vibrate" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

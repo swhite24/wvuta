@@ -1,8 +1,9 @@
 <resources>
 
-    <string name="app_name">WVU Student Transportation</string>
+    <string name="app_name">WVUTA</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">WVUTA</string>
+    <string name="settings">Settings</string>
 
 </resources>
