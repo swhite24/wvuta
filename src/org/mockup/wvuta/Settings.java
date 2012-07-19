@@ -7,6 +7,7 @@ import android.view.MenuItem;
 
 public class Settings extends PreferenceActivity {
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
